@@ -11,18 +11,20 @@
         setInterval(() => {
         fetch('/')
           .then((response) => response.json())
-          .then((historial) => {
-            const historialHTML = historial.map((line) => `<p>${line}</p>`).join('');
-            document.getElementById('historial').innerHTML = historialHTML;
+          .then((msj) => {
+            const msjHTML = msj.map((line) => `<p>${line}</p>`).join('');
+            document.getElementById('msj').innerHTML = msjHTML;
           })
           .catch((error) => console.error(error));
       }, 5000);
     </script>
     <body>
-        <h1>LAT:</h1>
-        <h1>LONG:</h1>
-        <h1>FECHA:</h1>
-        <h1>HORA:</h1>
-        <p>hola gays</p>
+        <p1>LAT: <span id="msj"></span></p1>
+        <br>
+        <p1>LONG:</p1>
+        <br>
+        <p1>FECHA:</p1>
+        <br>
+        <p1>HORA:</p1>
     </body>
 </html>

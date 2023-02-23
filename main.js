@@ -20,10 +20,10 @@ listener.on('listening', () => {
   const server = http.createServer(async (req, res) => {
     if (req.url === '/') {
       try {
-        const historial = await fs.readFile('historial.txt', 'utf-8');
-        const historialJSON = JSON.stringify(historial.split('\n').filter((line) => line !== ''));
+        const msj = await mensaje
+        const msjJSON = JSON.stringify(msj.split(';').filter((line) => line !== ''));
         res.setHeader('Content-Type', 'application/json');
-        res.end(historialJSON);
+        res.end(msjJSON);
       } catch (err) {
         console.error(err);
         res.statusCode = 500;
@@ -31,6 +31,7 @@ listener.on('listening', () => {
       }
     }
   });
+  
 server.listen(51012,'192.168.1.16', () => {
   console.log('El servidor está escuchando en el puerto 51012');
 });
