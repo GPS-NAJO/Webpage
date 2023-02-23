@@ -1,19 +1,15 @@
-title{
-font-size: 20px;
-}
+
 h1{
-    font-size:  70px;
+    font-size:  55px;
     font-family: 'Times New Roman', Times, serif;
     font-style: bold;
     text-align: center;
     
 }
-html, body {
-    padding: 20px;
+ body {
     height: 100%;
   }
-   
+
   body {
     overflow: hidden;
   }
-   
