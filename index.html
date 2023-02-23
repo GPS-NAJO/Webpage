@@ -7,7 +7,22 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="viewport" content="height=device-height, initial-scale=1.0">
     </head>
-   
+    <script>
+        setInterval(() => {
+          $.ajax('/api/valor',{
+            method: 'GET',
+            success: function(data){
+              $('#latitud').text(data.latitud);
+              $('#longitud').text(data.longitud);
+              var fecha = new Date(data.timestamp); // Convertir el timestamp a milisegundos y crear un objeto Date
+              var fechaLegible = fecha.toLocaleString();
+              var fechas = fechaLegible.split(',');
+              $('#hora').text(fechas[1]);
+              $('#fecha').text(fechas[0]);
+            }
+          })
+      }, 5000);
+    </script>
     <body>
         <h1>LAT: <span id="latitud"></span></h1>
         <br>
@@ -16,21 +31,5 @@
         <h1>FECHA: <span id="fecha"></span></h1>
         <br>
         <h1>HORA: <span id="hora"></span></h1>
-        <script>
-          setInterval(() => {
-            $.ajax('/api/valor',{
-              method: 'GET',
-              success: function(data){
-                $('#latitud').text(data.latitud);
-                $('#longitud').text(data.longitud);
-                var fecha = new Date(data.timestamp); // Convertir el timestamp a milisegundos y crear un objeto Date
-                var fechaLegible = fecha.toLocaleString();
-                var fechas = fechaLegible.split(',');
-                $('#hora').text(fechas[1]);
-                $('#fecha').text(fechas[0]);
-              }
-            })
-        }, 5000);
-      </script>
     </body>
 </html>
