@@ -21,7 +21,7 @@ listener.on('listening', () => {
     if (req.url === '/') {
       try {
         const msj = await mensaje
-        const msjJSON = JSON.stringify(msj.split(';').filter((line) => line !== ''));
+        const msjJSON = JSON.stringify(msj);
         res.setHeader('Content-Type', 'application/json');
         res.end(msjJSON);
       } catch (err) {
