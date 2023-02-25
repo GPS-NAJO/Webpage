@@ -25,16 +25,16 @@
                 
 
                 $('#latitud').text(data.latitud);
-                $('#latitud').css('background-color', '#' + Math.floor(Math.random()*16777215).toString(16));
+                $('#latitud').css('color', '#' + Math.floor(Math.random()*16777215).toString(16));
                 $('#longitud').text(data.longitud);
-                $('#longitud').css('background-color', '#' + Math.floor(Math.random()*16777215).toString(16));
+                $('#longitud').css('color', '#' + Math.floor(Math.random()*16777215).toString(16));
                 var fecha = new Date(data.timestamp); // Convertir el timestamp a milisegundos y crear un objeto Date
                 var fechaLegible = fecha.toLocaleString();
                 var fechas = fechaLegible.split(',');
                 $('#hora').text(fechas[1]);
-                $('#hora').css('background-color', '#' + Math.floor(Math.random()*16777215).toString(16));
+                $('#hora').css('color', '#' + Math.floor(Math.random()*16777215).toString(16));
                 $('#fecha').text(fechas[0]);
-                $('#fecha').css('background-color', '#' + Math.floor(Math.random()*16777215).toString(16));
+                $('#fecha').css('color', '#' + Math.floor(Math.random()*16777215).toString(16));
               }
             })
         }, 6000);
