@@ -1,7 +1,7 @@
 import fs from "fs";
 import http from "http";
 import path from "path";
-import { message } from "../sniffer/index.js";
+import { message } from "../listener/index.js";
 import config from "../scripts/index.js";
 
 let __dirname = path.resolve();
