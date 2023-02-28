@@ -44,9 +44,11 @@ function Servidor() {
     }
   });
 
-server.listen(config.SERVER_PORT, config.IP_LOCAL, () => {
-  console.log("El servidor está escuchando en el puerto 51012");
-});
+  server.listen(config.SERVER_PORT, config.IP_LOCAL, () => {
+    console.log(
+      "El servidor está escuchando en el puerto " + config.SERVER_PORT
+    );
+  });
 }
 
 export default Servidor;
