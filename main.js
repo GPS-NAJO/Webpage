@@ -1,2 +1,6 @@
-import "./sniffer/index.js";
-import "./server/index.js";
+import Servidor from "./server/index.js";
+import Listener from "./sniffer/index.js";
+
+Servidor();
+
+Listener();
