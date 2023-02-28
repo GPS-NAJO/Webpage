@@ -2,11 +2,24 @@
   "name": "webpage",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
+  "type": "module",
   "scripts": {
+    "dev": "nodemon dotenv/config main.js dotenv_config_path=scripts/environment/.env.dev",
+    "start": "node -r dotenv/config main.js dotenv_config_path=scripts/environment/.env.naye",
+    "start:florez": "node -r dotenv/config main.js dotenv_config_path=scripts/environment/.env.florez",
+    "start:orlando": "node -r dotenv/config main.js dotenv_config_path=scripts/environment/.env.orlando",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "nodemon": "^2.0.20",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "eslint": "^8.35.0"
+  }
 }
