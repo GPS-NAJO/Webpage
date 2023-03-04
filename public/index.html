@@ -7,6 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="viewport" content="height=device-height, initial-scale=1.0" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!--Leaflet prep-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+    integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+    crossorigin=""/>
+
   </head>
 
   <body>
@@ -14,6 +20,9 @@
     <h1>LONG: <span id="longitud"></span></h1>
     <h1>FECHA: <span id="fecha"></span></h1>
     <h1>HORA: <span id="hora"></span></h1>
+    
+    <div id="nav" style="width: 800px; height: 440px; border: 1px solid #aaa;"></div>
+
     <script>
       setInterval(() => {
         $.ajax("/api/valor", {
@@ -44,9 +53,20 @@
               "color",
               "#" + Math.floor(Math.random() * 16777215).toString(16)
             );
+
+            let nav = L.map("nav").setView([Number(data.latitud), Number(data.longitud)], 10);
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+              maxZoom: 18,
+              attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(nav);
+
           },
         });
       }, 6000);
     </script>
+     <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+ integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+ crossorigin=""></script>
   </body>
 </html>
