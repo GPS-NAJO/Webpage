@@ -1,26 +1,17 @@
 {
-  "name": "webpage",
-  "version": "1.0.0",
-  "description": "",
-  "main": "main.js",
-  "type": "module",
+  "name": "webpagen",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "dev": "nodemon dotenv/config main.js dotenv_config_path=scripts/environment/.env.dev",
-    "start": "node -r dotenv/config main.js dotenv_config_path=scripts/environment/.env.naye",
-    "start:florez": "node -r dotenv/config main.js dotenv_config_path=scripts/environment/.env.florez",
-    "start:orlando": "node -r dotenv/config main.js dotenv_config_path=scripts/environment/.env.orlando",
-    "start:camargo": "node -r dotenv/config main.js dotenv_config_path=scripts/environment/.env.camargo",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./bin/www"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "dotenv": "^16.0.3",
-    "nodemon": "^2.0.20",
-    "path": "^0.12.7"
-  },
-  "devDependencies": {
-    "eslint": "^8.35.0"
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "ejs": "^3.1.8",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "jade": "~1.11.0",
+    "morgan": "~1.9.1"
   }
 }
