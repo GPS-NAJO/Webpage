@@ -49,6 +49,8 @@ const Registro = sequelize.define('Registro', {
     type: DataTypes.TIME,
     allowNull: false,
   }
+},{
+  freezeTableName: true
 });
 
 conectado();
