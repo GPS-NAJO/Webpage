@@ -3,7 +3,6 @@ class Message {
 
   newSnifferMessage = async (newMessage) => {
     this.value = await newMessage.toString("utf8");
-  
 }
 
 };
