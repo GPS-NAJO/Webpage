@@ -37,6 +37,7 @@ function Servidor() {
           longitud: gpsdata[1],
           altitud: gpsdata[2],
           timestamp: parseInt(gpsdata[3], 10),
+          id: gpsdata[4]
         };
         res.setHeader("Content-Type", "application/json");
         res.end(JSON.stringify(gpsjson));

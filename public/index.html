@@ -20,7 +20,8 @@
     <h1>LONG: <span id="longitud"></span></h1>
     <h1>FECHA: <span id="fecha"></span></h1>
     <h1>HORA: <span id="hora"></span></h1>
-    
+    <h1>ID: <span id="id"></span></h1>
+
     <div id="nav" style="width: 800px; height: 440px; border: 1px solid #aaa;"></div>
 
     <script>
@@ -54,9 +55,15 @@
               "#" + Math.floor(Math.random() * 16777215).toString(16)
             );
 
+            $("#id").text(data.id);
+            $("#id").css(
+              "color",
+              "#" + Math.floor(Math.random() * 16777215).toString(16)
+            );
+            
             let nav = L.map("nav").setView([Number(data.latitud), Number(data.longitud)], 10);
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-              maxZoom: 18,
+              maxZoom: 20,
               attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             }).addTo(nav);
 
