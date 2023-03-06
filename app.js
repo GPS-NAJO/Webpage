@@ -34,11 +34,11 @@ const Registro = sequelize.define('Registro', {
     allowNull: false
   },
   latitud: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.DOUBLE,
     allowNull: false
   },
   longitud: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.DOUBLE,
     allowNull: false,
   },
   fecha: {
@@ -94,8 +94,8 @@ app.get('/api/gps',(req,res) =>{
         Registro.create({
 	  id: Math.round(Math.random() * 10000),
           ident: gpsdata[4],
-          latitud: parseInt(gpsdata[0]),
-          longitud: parseInt(gpsdata[1]),
+          latitud: parseFloat(gpsdata[0]),
+          longitud: parseFloat(gpsdata[1]),
           fecha: fechas[0],
           hora: fechas[1]
         })
