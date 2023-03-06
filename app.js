@@ -7,8 +7,7 @@ var udplistener = require('./listener/index')
 var homeRouter = require('./routes/home');
 var app = express();
 var {message} = require('./listener/index.js');
-const { DataTypes } = require('sequelize');
-var sequelize = require('./config');
+
 const { parse } = require('path');
 // view engine setup
 
@@ -22,55 +21,9 @@ app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-const Registro = sequelize.define('Registro', {
-  id: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    primaryKey: true,
-    autoincrement: true
-  },
-  ident: {
-    type: DataTypes.CHAR,
-    allowNull: false
-  },
-  latitud: {
-    type: DataTypes.DOUBLE,
-    allowNull: false
-  },
-  longitud: {
-    type: DataTypes.DOUBLE,
-    allowNull: false,
-  },
-  fecha: {
-    type: DataTypes.DATE,
-    allowNull: false,
-  },
-  hora: {
-    type: DataTypes.TIME,
-    allowNull: false,
-  }
-},{
-  freezeTableName: true,
-  timestamps: false
-});
-
-conectado();
-async function conectado(){
-try {
-  await sequelize.authenticate();
-  console.log('Connection has been established successfully.');
-} catch (error) {
-  console.error('Unable to connect to the database:', error);
-}
-}
 udplistener.Listener()
-
-
-
-
     
 app.use('/', homeRouter);
-var mensaje = 0;
 
 app.get('/api/gps',(req,res) =>{
   try{
@@ -85,29 +38,6 @@ app.get('/api/gps',(req,res) =>{
       };
       res.setHeader("Content-Type", "application/json");
       res.end(JSON.stringify(gpsjson));
-            
-      timestamp = parseInt(gpsdata[3],10)
-      var fecha = new Date(timestamp); // Convertir el timestamp a milisegundos y crear un objeto Date
-      var fechaLegible = fecha.toLocaleString();
-      var fechas = fechaLegible.split(",");
-      if(mensaje!==message){
-        Registro.create({
-	  id: Math.round(Math.random() * 10000),
-          ident: gpsdata[4],
-          latitud: parseFloat(gpsdata[0]),
-          longitud: parseFloat(gpsdata[1]),
-          fecha: fechas[0],
-          hora: fechas[1]
-        })
-          .then((Registro) => {
-            console.log('User created:', Registro.toJSON());
-          })
-          .catch((error) => {
-            console.error('Unable to create user:', error);
-          });
-      }
-      
-        mensaje = message
     }
   } catch (err){
     console.error(err);
