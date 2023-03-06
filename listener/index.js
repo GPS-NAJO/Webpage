@@ -1,10 +1,9 @@
-import dgram from "dgram";
-import config from "../scripts/index.js";
-import { Message } from "./message.js";
+const dgram = require("dgram");
+const { Message } = require("./message.js");
 
 const listener = dgram.createSocket("udp4");
 
-export const message = new Message();
+const message = new Message();
 
 function Listener() {
   // Inicia el listener que escucha para los datos udp provenientes de la app
@@ -22,7 +21,10 @@ function Listener() {
   });
 
   // Vincula el puerto e ip
-  listener.bind(config.SNIFFER_PORT, config.IP_LOCAL);
+  listener.bind(1001);
 }
 
-export default Listener;
+module.exports = {
+  message,
+  Listener,
+};
