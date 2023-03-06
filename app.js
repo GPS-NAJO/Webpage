@@ -24,6 +24,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const Registro = sequelize.define('Registro', {
   id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    primaryKey: true,
+    autoincrement: true
+  },
+  ident: {
     type: DataTypes.CHAR,
     allowNull: false
   },
@@ -45,16 +51,15 @@ const Registro = sequelize.define('Registro', {
   }
 });
 
-
-sequelize.authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.');
-    return Registro.sync(); // Sincroniza el modelo con la tabla de la base de datos
-  })
-  .catch((error) => {
-    console.error('Unable to connect to the database:', error);
-  });
-
+conectado();
+async function conectado(){
+try {
+  await sequelize.authenticate();
+  console.log('Connection has been established successfully.');
+} catch (error) {
+  console.error('Unable to connect to the database:', error);
+}
+}
 udplistener.Listener()
 
 
@@ -78,20 +83,21 @@ app.get('/api/gps',(req,res) =>{
       res.setHeader("Content-Type", "application/json");
       res.end(JSON.stringify(gpsjson));
             
-      timestamp = parseInt(DATOS[3],10)
+      timestamp = parseInt(gpsdata[3],10)
       var fecha = new Date(timestamp); // Convertir el timestamp a milisegundos y crear un objeto Date
       var fechaLegible = fecha.toLocaleString();
       var fechas = fechaLegible.split(",");
       if(mensaje!==message){
         Registro.create({
-          id: gpsdata[4],
+	  id: Math.round(Math.random() * 10000),
+          ident: gpsdata[4],
           latitud: parseInt(gpsdata[0]),
           longitud: parseInt(gpsdata[1]),
           fecha: fechas[0],
           hora: fechas[1]
         })
-          .then((user) => {
-            console.log('User created:', user.toJSON());
+          .then((Registro) => {
+            console.log('User created:', Registro.toJSON());
           })
           .catch((error) => {
             console.error('Unable to create user:', error);
