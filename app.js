@@ -50,7 +50,8 @@ const Registro = sequelize.define('Registro', {
     allowNull: false,
   }
 },{
-  freezeTableName: true
+  freezeTableName: true,
+  timestamps: false
 });
 
 conectado();
