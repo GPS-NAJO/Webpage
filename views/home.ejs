@@ -65,7 +65,7 @@
             );
 
             if(status === 0){
-              let nav = L.map("nav").setView([Number(data.latitud), Number(data.longitud)], 10);
+              let nav = L.map("nav").setView([Number(data.latitud), Number(data.longitud)], 18);
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
               maxZoom: 20,
               attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -79,7 +79,7 @@
             status = 1;
             }
             else{
-              nav.setView([Number(data.latitud), Number(data.longitud)], 10);
+              nav.setView([Number(data.latitud), Number(data.longitud)], 18);
               marker.setLatLng([Number(data.latitud), Number(data.longitud)]);
             }
                
