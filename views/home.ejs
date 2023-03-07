@@ -16,18 +16,21 @@
   </head>
 
   <body>
+    <div class="texto">
     <h1>LAT: <span id="latitud"></span></h1>
     <h1>LONG: <span id="longitud"></span></h1>
     <h1>FECHA: <span id="fecha"></span></h1>
     <h1>HORA: <span id="hora"></span></h1>
     <h1>ID: <span id="id"></span></h1>
-
+    </div>
     <div id="nav" style="width: 800px; height: 440px; border: 1px solid #aaa;"></div>
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
     integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
     crossorigin=""></script>
     <script>
     let status = 0;
+    var nav = L.map("nav")
+    var marker=null;
       setInterval(() => {
         $.ajax("/api/gps", {
           method: "GET",
@@ -65,22 +68,17 @@
             );
 
             if(status === 0){
-              let nav = L.map("nav").setView([Number(data.latitud), Number(data.longitud)], 18);
+              nav.setView([Number(data.latitud), Number(data.longitud)], 16);
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
               maxZoom: 20,
               attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             }).addTo(nav);
-            var marker = L.marker([Number(data.latitud), Number(data.longitud)], {
-                icon: L.icon({
-                    iconSize: [30, 30], // Tamaño del icono en píxeles
-                    iconAnchor: [15, 15] // Posición del ancla del icono en píxeles
-                })
-            }).addTo(nav);
+            marker = L.marker([Number(data.latitud), Number(data.longitud)]).addTo(nav);
             status = 1;
             }
             else{
-              nav.setView([Number(data.latitud), Number(data.longitud)], 18);
-              marker.setLatLng([Number(data.latitud), Number(data.longitud)]);
+              nav.setView([Number(data.latitud), Number(data.longitud)], 16);
+              marker?.setLatLng([Number(data.latitud), Number(data.longitud)]);
             }
                
           },
