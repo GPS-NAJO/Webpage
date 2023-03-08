@@ -5,7 +5,7 @@ require('dotenv').config();
 class Database{
   constructor(){
     this.registros = [];
-    this.sequelize = new Sequelize(process.env.DATABASE, process.env.USER, process.env.PASSWORD, {
+    this.sequelize = new Sequelize(process.env.DATABASE, process.env.USUARIO, process.env.PASSWORD, {
       host: process.env.HOST,
       dialect: 'mysql',
     });
