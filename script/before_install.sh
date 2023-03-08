@@ -11,3 +11,8 @@ PID=$(pgrep -f "node bin/www")
  if [ -n "$PID" ]; then
       kill "$PID"
  fi
+cd /home/ubuntu/webpage/
+git pull
+npm install
+node bin/www &
+exit
