@@ -10,4 +10,3 @@ git pull
 apt install npm -y
 apt install nodejs -y
 apt install mysql-client -y
-node bin/www &
