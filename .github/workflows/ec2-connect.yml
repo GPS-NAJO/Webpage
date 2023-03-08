@@ -24,9 +24,12 @@ jobs:
         script: |
           cd /home/ubuntu/Webpage/
           sudo git pull
+          sleep 5
           sudo npm install
+          sleep 5
           PID=$(sudo pgrep -x -f "node bin/www")
           if [ -n "$PID" ]; then
             sudo kill "$PID"
           fi
+          sleep 5
           sudo nohup node bin/www > log.txt 2>&1 & disown
