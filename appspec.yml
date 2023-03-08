@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /var/www/html/GPS-Najo/Webpage
+    destination: /var/www/html/GPS-NAJO/Webpage
 hooks:
   BeforeInstall:
     - location: scripts/before_install.sh
