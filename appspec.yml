@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /var/www/html/diseno
+    destination: /var/www/html/GPS-Najo/Webpage
 hooks:
   BeforeInstall:
     - location: scripts/install_dependencies.sh
