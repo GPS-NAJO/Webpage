@@ -31,5 +31,4 @@ jobs:
           git pull
           npm install
           node bin/www &
-          exit
           
