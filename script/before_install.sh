@@ -1,10 +1,4 @@
 #!/bin/bash
-sudo apt install npm -y
-
-sudo apt install nodejs -y
-
-sudo apt install mysql-client -y
-
 sudo su
 
 PID=$(pgrep -f "node bin/www")
@@ -13,6 +7,8 @@ PID=$(pgrep -f "node bin/www")
  fi
 cd /home/ubuntu/webpage/
 git pull
-npm install
+apt install npm -y
+apt install nodejs -y
+apt install mysql-client -y
 node bin/www &
 exit
