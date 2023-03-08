@@ -1,13 +1,12 @@
 #!/bin/bash
-sudo su
 
 PID=$(pgrep -f "node bin/www")
  if [ -n "$PID" ]; then
-      kill "$PID"
+      sudo kill "$PID"
  fi
-apt install npm -y
-apt install nodejs -y
-apt install mysql-client -y
-cd /home/ubuntu/webpage/
+sudo apt install npm -y
+sudo apt install nodejs -y
+sudo apt install mysql-client -y
+cd /home/ubuntu/webpage/Webpage
 git pull
 npm install
