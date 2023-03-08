@@ -23,23 +23,13 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           sudo su
-
-    - name: Stop node process
-      run: |
-        PID=$(pgrep -f "node bin/www")
-        if [ -n "$PID" ]; then
-          kill "$PID"
-        fi
-
-    - name: Deploy code
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.EC2_IP_ADDRESS }}
-        username: ubuntu
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
+          PID=$(pgrep -f "node bin/www")
+          if [ -n "$PID" ]; then
+            kill "$PID"
+          fi
           cd /home/ubuntu/Webpage/
           git pull
           npm install
           node bin/www &
           exit
+          
