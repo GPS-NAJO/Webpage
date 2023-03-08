@@ -14,12 +14,7 @@ var {message} = require('./listener/index.js');
 //hola
 //hola
 //hola
-//hola
-//hola
-//hola
-//hola
-//test
-//por favor funciona
+//funcionapofaboyanomas
 const { parse } = require('path');
 // view engine setup
 
