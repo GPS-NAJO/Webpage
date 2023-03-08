@@ -1,0 +1,33 @@
+name: SSH into EC2 instance on push and merge to main
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  ssh:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Connect to EC2 instance
+      run: ssh -i $ {{ secrets.SSH_PRIVATE_KEY }} ubuntu@$ {{ secrets.EC2_IP_ADDRESS }}
+      
+    - name: Stop node process
+      run: |
+        sudo su
+        PID=$(pgrep -f "node bin/www")
+        if [ -n "$PID" ]; then
+          kill "$PID"
+        fi
+
+    - name: Run command on EC2 instance
+      run: |
+        cd /home/ubuntu/Webpage/
+        git pull
+        npm install
+        node bin/www &
