@@ -22,11 +22,14 @@ jobs:
         username: ubuntu
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
+          sudo su
           cd /home/ubuntu/Webpage/
           git pull
-          npm install
+          npm install -y
           PID=$(sudo pgrep -f "node bin/www")
           if [ -n "$PID" ]; then
-            sudo kill "$PID"
+            kill "$PID"
           fi
-          sudo nohup node bin/www &
+          nohup node bin/www &
+          exit
+          exit
