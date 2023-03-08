@@ -8,4 +8,4 @@ sudo apt install npm -y
 sudo apt install nodejs -y
 sudo apt install mysql-client -y
 cd /home/ubuntu/webpage/Webpage
-npm install
+sudo apt npm install
