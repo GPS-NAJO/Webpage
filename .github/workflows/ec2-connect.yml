@@ -31,4 +31,4 @@ jobs:
             --application-name github_dep \
             --deployment-group-name github_dep_group \
             --deployment-config-name CodeDeployDefault.OneAtATime \
-            --github-location repository=${{ GPS-NAJO/Webpage }},commitId=${{ github.sha }}
+            --github-location repository=${{ https://github.com/GPS-NAJO/Webpage }},commitId=${{ github.sha }}
