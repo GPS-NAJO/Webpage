@@ -9,27 +9,32 @@ on:
       - main
 
 jobs:
-  ssh:
+  continuos-integration:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Connect to EC2 instance
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.EC2_IP_ADDRESS }}
-        username: ubuntu
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-          cd /home/ubuntu/Webpage/
-          sudo git pull
-          sleep 5
-          sudo npm install
-          sleep 5
-          PID=$(sudo pgrep -x -f "node bin/www")
-          if [ -n "$PID" ]; then
-            sudo kill "$PID"
-          fi
-          sleep 5
-          sudo nohup node bin/www > log.txt 2>&1 & disown
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with: aws-access-key-id:${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key:${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region:us-east-1
+  continuous-deployment:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id:${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key:${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region:us-east-1
+      - name: Create CodeDeploy Deployment
+        id: deploy
+        run: |
+          aws deploy create-deployment \
+            --application-name github_dep \
+            --deployment-group-name github_dep_group \
+            --deployment-config-name CodeDeployDefault.AllAtOnce \
+            --github-location repository=${{ GPS-NAJO/Webpage }},commitId=${{ github.sha }}
