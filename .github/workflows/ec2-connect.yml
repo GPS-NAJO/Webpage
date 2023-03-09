@@ -36,5 +36,5 @@ jobs:
           aws deploy create-deployment \
             --application-name github_dep \
             --deployment-group-name github_dep_group \
-            --deployment-config-name CodeDeployDefault.AllAtOnce \
+            --deployment-config-name CodeDeployDefault.OneAtTime \
             --github-location repository=${{ GPS-NAJO/Webpage }},commitId=${{ github.sha }}
