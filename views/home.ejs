@@ -3,97 +3,40 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html" , charset="UTF-8" />
     <title>GPS</title>
-    <link rel="stylesheet" type="text/css" href="/stylesheets/styles.css" media="screen" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/stylesheets/styles.css"
+      media="screen"
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="viewport" content="height=device-height, initial-scale=1.0" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!--Leaflet prep-->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-    integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
-    crossorigin=""/>
-
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+      integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+      crossorigin=""
+    />
   </head>
 
   <body>
-    
     <div class="texto">
-    <h1>LAT: <span id="latitud"></span></h1>
-    <h1>LONG: <span id="longitud"></span></h1>
-    <h1>FECHA: <span id="fecha"></span></h1>
-    <h1>HORA: <span id="hora"></span></h1>
-    <h1>ID: <span id="id"></span></h1>
+      <h1>LAT: <span id="latitud"></span></h1>
+      <h1>LONG: <span id="longitud"></span></h1>
+      <h1>FECHA: <span id="fecha"></span></h1>
+      <h1>HORA: <span id="hora"></span></h1>
+      <h1>ID: <span id="id"></span></h1>
     </div>
+
     <div id="nav"></div>
-    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
-    crossorigin=""></script>
-    <script>
-
-  //function getRandomInRange(from, to, fixed) {
-    //return (Math.random() * (to - from) + from).toFixed(fixed) * 1;
-//}
-    let status = 0;
-    var nav = L.map("nav")
-    var marker=null;
-      setInterval(() => {
-        $.ajax("/api/gps", {
-          method: "GET",
-          success: function (data) {
-            // Establecer el color de fondo del elemento
-
-            $("#latitud").text(data.latitud);
-            $("#latitud").css(
-              "color",
-              "#" + Math.floor(Math.random() * 16777215).toString(16)
-            );
-            $("#longitud").text(data.longitud);
-            $("#longitud").css(
-              "color",
-              "#" + Math.floor(Math.random() * 16777215).toString(16)
-            );
-            var fecha = new Date(data.timestamp); // Convertir el timestamp a milisegundos y crear un objeto Date
-            var fechaLegible = fecha.toLocaleString();
-            var fechas = fechaLegible.split(",");
-            $("#hora").text(fechas[1]);
-            $("#hora").css(
-              "color",
-              "#" + Math.floor(Math.random() * 16777215).toString(16)
-            );
-            $("#fecha").text(fechas[0]);
-            $("#fecha").css(
-              "color",
-              "#" + Math.floor(Math.random() * 16777215).toString(16)
-            );
-
-            $("#id").text(data.id);
-            $("#id").css(
-              "color",
-              "#" + Math.floor(Math.random() * 16777215).toString(16)
-            );
-            let coords=[Number(data.latitud), Number(data.longitud)]
-            //let coords=[getRandomInRange(-90,90), getRandomInRange(-180,180)]
-            if(status === 0){
-              nav.setView(coords, 18);
-
-            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-              maxZoom: 20,
-              attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            }).addTo(nav);
-            marker = L.marker(coords).addTo(nav);
-            status = 1;
-            }
-            else{
-              nav.setView(coords, 18);
-              marker?.setLatLng(coords);
-
-            }
-               
-          },
-        });
-      }, 6000);
-    </script>
-     <!-- Make sure you put this AFTER Leaflet's CSS -->
-
+    <script
+      src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+      integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+      crossorigin=""
+    ></script>
+    <script src="/scripts/index.js"></script>
   </body>
 </html>
