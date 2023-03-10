@@ -1,2 +1,7 @@
 #!/bin/bash
-sudo nohup node bin/www &
+
+sudo su
+
+git pull
+
+nohup node bin/www &
