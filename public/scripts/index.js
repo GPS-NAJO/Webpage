@@ -1,7 +1,7 @@
 let status = 0;
 var nav = L.map("nav");
 var marker = null;
-
+var coordenadas = [];
 function getData() {
   $.ajax("/api/gps", {
     method: "GET",
@@ -39,16 +39,8 @@ function getData() {
       );
 
       //let coords = [data.latitud, data.longitud];
-      let coords = [10.946897, -74.78476];
-      var coordenadas = [
-        [10.946897, -74.78476],
-        [10.948984, -74.785322],
-        [10.951071, -74.785948],
-        [10.953526, -74.786635],
-        [10.95592, -74.786198],
-        [10.958375, -74.785197],
-        [10.95948, -74.78626],
-      ];
+      let coords = [data.latitud, data.longitud];
+      coordenadas.append(coords);
 
       if (status === 0) {
         //let coords=[Number(data.latitud), Number(data.longitud)]
@@ -61,10 +53,18 @@ function getData() {
           maxZoom: 20,
         }).addTo(map);
         // Crea un control de rutas y agrega la ruta al mapa
+        if (coordenadas.length > 1) {
+          var polyline = L.polyline(
+            [
+              coordenadas[coordenadas.length - 1],
+              coordenadas[coordenadas.length],
+            ],
+            {
+              color: "red",
+            }
+          ).addTo(map);
+        }
 
-        var polyline = L.polyline(coordenadas, {
-          color: "red",
-        }).addTo(map);
         marker = L.marker(coordenadas[coordenadas.length - 1]).addTo(nav);
         status = 1;
       } else {

@@ -2,10 +2,9 @@ const dgram = require("dgram");
 const { Message } = require("./message.js");
 const Database = require("../Databases.js");
 const listener = dgram.createSocket("udp4");
-
 const message = new Message();
-
 const database = new Database();
+
 function Listener() {
   // Inicia el listener que escucha para los datos udp provenientes de la app
   listener.on("listening", async () => {
