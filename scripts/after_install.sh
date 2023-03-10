@@ -1,2 +1,2 @@
 #!/bin/bash
-nohup node bin/www &
+sudo nohup node bin/www &
