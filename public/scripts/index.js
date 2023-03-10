@@ -53,7 +53,7 @@ function getData() {
           maxZoom: 20,
         }).addTo(map);
         // Crea un control de rutas y agrega la ruta al mapa
-        if (coordenadas.length > 1) {
+     //   if (coordenadas.length > 1) {
           var polyline = L.polyline(
             [
               coordenadas[coordenadas.length - 1],
@@ -63,14 +63,14 @@ function getData() {
               color: "red",
             }
           ).addTo(map);
-        }
+      //  }
 
         marker = L.marker(coordenadas[coordenadas.length - 1]).addTo(nav);
         status = 1;
  //     } else {
         
-        nav.setView(coords, 18);
-        marker?.setLatLng(coordenadas[coordenadas.length - 1]);
+       // nav.setView(coords, 18);
+       // marker?.setLatLng(coordenadas[coordenadas.length - 1]);
       //}
     },
   });
