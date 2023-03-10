@@ -37,14 +37,23 @@ function getData() {
         "color",
         "#" + Math.floor(Math.random() * 16777215).toString(16)
       );
-
-      //let coords = [data.latitud, data.longitud];
-      let coords = [data.latitud, data.longitud];
-      coordenadas.push(coords);
+      function getRandomInRange(from, to, fixed) {
+        return (Math.random() * (to - from) + from).toFixed(fixed) * 1;
+      }
+      //let coords = [];
+      //let coords = [getRandomInRange(-90, 90), getRandomInRange(-180, 180)];
+      // let coords=[Number(data.latitud), Number(data.longitud)]
+      //coordenadas.append(coords);
+      let coordenadas = [];
+      let coords = [Number(data.latitud), Number(data.longitud)];
+      for (let i = 0; i < 80; i++) {
+        let coords = [Number(data.latitud), Number(data.longitud)];
+        coordenadas.push(coords);
+      }
 
       if (status === 0) {
         //let coords=[Number(data.latitud), Number(data.longitud)]
-        const map = nav.setView(coords, 17);
+        const map = nav.setView(coords, 08);
 
         // Crea una capa de mosaicos
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -54,21 +63,14 @@ function getData() {
         }).addTo(map);
         // Crea un control de rutas y agrega la ruta al mapa
         if (coordenadas.length > 1) {
-          var polyline = L.polyline(
-            [
-              coordenadas[coordenadas.length - 1],
-              coordenadas[coordenadas.length],
-            ],
-            {
-              color: "red",
-            }
-          ).addTo(map);
+          var polyline = L.polyline([coordenadas], {
+            color: "red",
+          }).addTo(map);
         }
 
         marker = L.marker(coordenadas[coordenadas.length - 1]).addTo(nav);
         status = 1;
       } else {
-        
         nav.setView(coords, 18);
         marker?.setLatLng(coordenadas[coordenadas.length - 1]);
       }
@@ -78,7 +80,7 @@ function getData() {
 // function getRandomInRange(from, to, fixed) {
 // return (Math.random() * (to - from) + from).toFixed(fixed) * 1;
 //} //comentar para ecs
-
+//let coords = [getRandomInRange(-90, 90), getRandomInRange(-180, 180)]
 getData();
 setInterval(() => {
   getData();
