@@ -30,5 +30,7 @@ jobs:
           aws deploy create-deployment \
             --application-name Git_application \
             --deployment-group-name development_gropup \
+            --file-exists-behavior OVERWRITE\
             --deployment-config-name CodeDeployDefault.OneAtATime \
             --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
+            
