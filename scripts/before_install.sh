@@ -1,8 +1,10 @@
 #!/bin/bash
 
-sudo cd /home/ubuntu/Webpage
-sudo git pull
+sudo su
+
+cd /home/ubuntu/Webpage
+
 PID=$(pgrep -f "node bin/www")
  if [ -n "$PID" ]; then
-      sudo kill "$PID"
+      kill "$PID"
  fi
