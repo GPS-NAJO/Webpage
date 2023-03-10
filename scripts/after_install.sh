@@ -1,2 +1,4 @@
 #!/bin/bash
-nohup node bin/www &
+sudo git pull
+sudo npm install
+sudo nohup node bin/www &
