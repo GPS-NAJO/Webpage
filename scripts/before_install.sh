@@ -6,4 +6,3 @@ PID=$(pgrep -f "node bin/www")
  fi
 cd /home/ubuntu/Webpage
 git pull
-sudo npm install
