@@ -50,6 +50,10 @@ app.get('/api/gps',(req,res) =>{
 
 });
 
+app.get('/historial', (req, res) => { 
+  res.send('historial');
+})
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

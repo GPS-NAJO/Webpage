@@ -30,6 +30,7 @@
       <h1>FECHA: <span id="fecha"></span></h1>
       <h1>HORA: <span id="hora"></span></h1>
       <h1>ID: <span id="id"></span></h1>
+      <button id = "historico">Historial de ruta</button>
     </div>
 
     <div id="nav"></div>
@@ -38,6 +39,14 @@
       integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
       crossorigin=""
     ></script>
+    <script>
+      document.getElementById('historico').addEventListener('click',
+      () => {
+        fetch('/historial').then(response.text()).then(data =>{
+          document.body.innerHTML=data;
+        })
+      })
+    </script>
     <script src="/scripts/index.js"></script>
   </body>
 </html>
