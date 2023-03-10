@@ -37,17 +37,15 @@ function getData() {
         "color",
         "#" + Math.floor(Math.random() * 16777215).toString(16)
       );
-      function getRandomInRange(from, to, fixed) {
-        return (Math.random() * (to - from) + from).toFixed(fixed) * 1;
-      }
-      //let coords = [];
+      //function getRandomInRange(from, to, fixed) {
+      //return (Math.random() * (to - from) + from).toFixed(fixed) * 1;
+      // }
       //let coords = [getRandomInRange(-90, 90), getRandomInRange(-180, 180)];
-      // let coords=[Number(data.latitud), Number(data.longitud)]
-      //coordenadas.append(coords);
+
       let coordenadas = [];
-      let coords = [Number(data.latitud), Number(data.longitud)];
-      for (let i = 0; i < 80; i++) {
-        let coords = [Number(data.latitud), Number(data.longitud)];
+      let coords = [data.latitud, data.longitud];
+      for (let i = 0; i < 10; i++) {
+        let coords = [data.latitud, data.longitud];
         coordenadas.push(coords);
       }
 
