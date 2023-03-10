@@ -1,9 +1,9 @@
 const dgram = require("dgram");
 const { Message } = require("./message.js");
-//const Database = require("../Databases.js");
+const Database = require("../Databases.js");
 const listener = dgram.createSocket("udp4");
 const message = new Message();
-//const database = new Database();
+const database = new Database();
 
 function Listener() {
   // Inicia el listener que escucha para los datos udp provenientes de la app
@@ -12,7 +12,7 @@ function Listener() {
     console.log(
       `El listener UDP está escuchando en ${address.address}:${address.port}`
     );
-    //await database.connection();
+    await database.connection();
   });
 
   //Imprime mensaje en consola para efectos de depuracion
