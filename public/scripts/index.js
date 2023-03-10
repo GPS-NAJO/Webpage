@@ -42,12 +42,9 @@ function getData() {
       // }
       //let coords = [getRandomInRange(-90, 90), getRandomInRange(-180, 180)];
 
-      let coordenadas = [];
+      
       let coords = [data.latitud, data.longitud];
-      for (let i = 0; i < 10; i++) {
-        let coords = [data.latitud, data.longitud];
         coordenadas.push(coords);
-      }
 
       if (status === 0) {
         //let coords=[Number(data.latitud), Number(data.longitud)]
