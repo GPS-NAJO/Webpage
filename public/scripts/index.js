@@ -40,7 +40,7 @@ function getData() {
 
       //let coords = [data.latitud, data.longitud];
       let coords = [data.latitud, data.longitud];
-      coordenadas.append(coords);
+      coordenadas.push(coords);
 
       if (status === 0) {
         //let coords=[Number(data.latitud), Number(data.longitud)]
