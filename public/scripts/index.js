@@ -42,7 +42,7 @@ function getData() {
       let coords = [data.latitud, data.longitud];
       coordenadas.push(coords);
 
-      if (status === 0) {
+    //  if (status === 0) {
         //let coords=[Number(data.latitud), Number(data.longitud)]
         const map = nav.setView(coords, 17);
 
@@ -53,11 +53,6 @@ function getData() {
           maxZoom: 20,
         }).addTo(map);
         // Crea un control de rutas y agrega la ruta al mapa
-        
-
-        marker = L.marker(coordenadas[coordenadas.length - 1]).addTo(nav);
-        status = 1;
-      } else {
         if (coordenadas.length > 1) {
           var polyline = L.polyline(
             [
@@ -69,9 +64,14 @@ function getData() {
             }
           ).addTo(map);
         }
+
+        marker = L.marker(coordenadas[coordenadas.length - 1]).addTo(nav);
+        status = 1;
+ //     } else {
+        
         nav.setView(coords, 18);
         marker?.setLatLng(coordenadas[coordenadas.length - 1]);
-      }
+      //}
     },
   });
 }
