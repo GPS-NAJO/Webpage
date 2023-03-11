@@ -42,10 +42,8 @@
     <script>
       document.getElementById('historico').addEventListener('click',
       () => {
-        fetch('/h').then(respnse => response.text()).then(data =>{
-          document.body.innerHTML=data;
+        window.location.href = '/historial';
         })
-      })
     </script>
     <script src="/scripts/index.js"></script>
   </body>

@@ -29,7 +29,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 udplistener.Listener()
     
 app.use('/', homeRouter);
-
 app.get('/api/gps',(req,res) =>{
   try{
     if (message.value != null) {
@@ -51,7 +50,6 @@ app.get('/api/gps',(req,res) =>{
 
 });
 
-app.use('/h', histoRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

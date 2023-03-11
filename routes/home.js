@@ -5,5 +5,9 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
   res.render('home');
 });
+/* GET historial page. */
+router.get('/historial', function(req, res, next) {
+  res.render('historial');
+});
 
 module.exports = router;
