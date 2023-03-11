@@ -42,7 +42,7 @@
     <script>
       document.getElementById('historico').addEventListener('click',
       () => {
-        fetch('/historial').then(response.text()).then(data =>{
+        fetch('./routes/historial').then(response.text()).then(data =>{
           document.body.innerHTML=data;
         })
       })

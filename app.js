@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var udplistener = require('./listener/index')
 var homeRouter = require('./routes/home');
+var histoRouter = require('./routes/historial')
 var app = express();
 var {message} = require('./listener/index.js');
 //probandopipeline
@@ -50,9 +51,7 @@ app.get('/api/gps',(req,res) =>{
 
 });
 
-app.get('/historial', (req, res) => { 
-  res.send('historial');
-})
+app.use('/h', histoRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
