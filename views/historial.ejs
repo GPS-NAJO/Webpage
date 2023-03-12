@@ -5,38 +5,47 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
     integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
     crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+    crossorigin=""></script>
 </head>
 <body>
   <h2>Ingrese la ventana de tiempo deseada</h1>
-  <div id="map"></div>
+
+  <section>
+    <div class="Input-container">
+      <form action="/api/Historial" method="post">
+        <label for="ID">ID del vehiculo:</label>
+        <input type="text" id="ID" name="ID"><br><br>
+          
+        <label for="fechain">Fecha (YYYY-MM-DD):</label>
+        <input type="date" id="fechain" name="fechain"><br><br>
+          
+        <label for="appt">Seleccione el tiempo inicial:</label>
+        <input type="time" id="appt" name="appt"></textarea><br><br>
+          
+        <label for="apptf">Seleccione el tiempo final:</label>
+        <input type="time" id="appft" name="apptf"></textarea><br><br>
     
-  <form action="/api/Historial" method="post">
-    <label for="ID">ID del vehiculo:</label>
-    <input type="text" id="ID" name="ID"><br><br>
-      
-    <label for="fechain">Fecha (YYYY-MM-DD):</label>
-    <input type="date" id="fechain" name="fechain"><br><br>
-      
-    <label for="appt">Seleccione el tiempo inicial:</label>
-    <input type="time" id="appt" name="appt"></textarea><br><br>
-      
-    <label for="apptf">Seleccione el tiempo final:</label>
-    <input type="time" id="appft" name="apptf"></textarea><br><br>
+        <input type="submit" value="Send">
+        <button id = "returnToHome">Regresar</button>
+      </form>
+    </div>
+  </section>  
+  <div id="mapa" style="width: 800px; height: 440px; border: 1px solid #aaa;"></div>
 
-    <input type="submit" value="Send">
-  </form>
-
-  <button id = "returnToHome">Regresar</button>
-
+  <script>
+    var mapa = L.map('mapa').setView([51.505, -0.09], 13);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+   }).addTo(mapa);
+  </script>
   <script>
       document.getElementById('returnToHome').addEventListener('click',
       () => {
         window.location.href = '/';
         })
   </script>
- <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
- integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
- crossorigin=""></script>
- <script src="histdex.js"></script>
 </body>
 </html>
