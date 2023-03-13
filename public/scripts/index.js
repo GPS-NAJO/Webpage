@@ -37,19 +37,16 @@ function getData() {
         "color",
         "#" + Math.floor(Math.random() * 16777215).toString(16)
       );
-      //function getRandomInRange(from, to, fixed) {
-      //return (Math.random() * (to - from) + from).toFixed(fixed) * 1;
-      // }
-      //let coords = [getRandomInRange(-90, 90), getRandomInRange(-180, 180)];
 
-      
+      let coordenadas = [];
       let coords = [data.latitud, data.longitud];
+      for (let i = 0; i < 10; i++) {
+        let coords = [data.latitud, data.longitud];
         coordenadas.push(coords);
-
+      }
       if (status === 0) {
         //let coords=[Number(data.latitud), Number(data.longitud)]
         const map = nav.setView(coords, 08);
-
         // Crea una capa de mosaicos
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
           attribution:
@@ -62,7 +59,6 @@ function getData() {
             color: "red",
           }).addTo(map);
         }
-
         marker = L.marker(coordenadas[coordenadas.length - 1]).addTo(nav);
         status = 1;
       } else {
@@ -72,11 +68,18 @@ function getData() {
     },
   });
 }
+
 // function getRandomInRange(from, to, fixed) {
 // return (Math.random() * (to - from) + from).toFixed(fixed) * 1;
 //} //comentar para ecs
 //let coords = [getRandomInRange(-90, 90), getRandomInRange(-180, 180)]
+
 getData();
 setInterval(() => {
   getData();
 }, 6000);
+
+//Entorno de desarrollo con simulación
+if (process.argv.includes("--d")) {
+  elseif(process.argv.includes("--d"));
+}
