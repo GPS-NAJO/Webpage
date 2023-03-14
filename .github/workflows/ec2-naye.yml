@@ -20,16 +20,16 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-access-key-id: ${{ secrets.AWSN_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWSN_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
      
       - name: Create CodeDeploy Deployment
         id: deploy
         run: |
           aws deploy create-deployment \
-            --application-name github_dep \
-            --deployment-group-name github_dep_group \
-            --file-exists-behavior OVERWRITE\
+            --application-name Nayeli_EC \
+            --deployment-group-name EC2Nayeli_DG \
+            --file-exists-behavior OVERWRITE \
             --deployment-config-name CodeDeployDefault.OneAtATime \
             --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
