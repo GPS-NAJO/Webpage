@@ -1,4 +1,4 @@
 #!/bin/bash
 
 cd /home/ubuntu/Webpage
-pkill -f "node bin/www"
+sudo pkill -f "node bin/www"
