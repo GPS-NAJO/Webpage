@@ -1,4 +1,4 @@
 #!/bin/bash
 cd /home/ubuntu/Webpage
-npm install
-nohup node bin/www &
+sudo npm install
+sudo nohup node bin/www > /dev/null 2>&1 &
