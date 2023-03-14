@@ -10,4 +10,5 @@ router.get('/historial', function(req, res, next) {
   res.render('historial');
 });
 //hola
+//hola
 module.exports = router;
