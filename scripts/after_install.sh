@@ -1,4 +1,3 @@
 #!/bin/bash
-
-sudo npm install
-sudo nohup node bin/www &
+npm install
+nohup node bin/www &
