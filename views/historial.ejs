@@ -43,13 +43,12 @@
       <script>
         $(function() {
           $('#sendBtn').click(function() {
-            var selectedRange = $('input[name="datetimes"]').data('daterangepicker');
-            var startDate = selectedRange.startDate.format('YYYY/MM/DD hh:mm:ss');
-            var endDate = selectedRange.endDate.format('YYYY/MM/DD hh:mm:ss');
-        
             $.ajax({
               url: '/api/historicos',
-              data: { startTime: startDate, endTime: endDate },
+              data: { 
+                startTime: $('input[name="datetimes"]').data('daterangepicker').startDate.format('YYYY/MM/DD hh:mm:ss'),
+                endTime: $('input[name="datetimes"]').data('daterangepicker').endDate.format('YYYY/MM/DD hh:mm:ss')
+              },
               success: function(data) {
                 console.log(data);
               }
