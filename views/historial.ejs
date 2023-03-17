@@ -39,8 +39,25 @@
         });
         </script>
       </form>
-      <input type="submit" value="Send">
-        <button id = "returnToHome">Regresar</button>
+      <input type="button" value="Send" id="sendBtn">
+      <script>
+        $(function() {
+          $('#sendBtn').click(function() {
+            var selectedRange = $('input[name="datetimes"]').data('daterangepicker');
+            var startDate = selectedRange.startDate.format('YYYY/MM/DD hh:mm:ss');
+            var endDate = selectedRange.endDate.format('YYYY/MM/DD hh:mm:ss');
+        
+            $.ajax({
+              url: '/api/historicos',
+              data: { startTime: startDate, endTime: endDate },
+              success: function(data) {
+                console.log(data);
+              }
+            });
+          });
+        });
+        </script>
+      <button id = "returnToHome">Regresar</button>
     </div>
   </section>  
   <div id="mapa" style="width: 800px; height: 440px; border: 1px solid #aaa;"></div>
