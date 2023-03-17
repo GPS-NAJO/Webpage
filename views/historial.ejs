@@ -8,6 +8,10 @@
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
     integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
     crossorigin=""></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 </head>
 <body>
   <h2>Ingrese la ventana de tiempo deseada</h1>
@@ -15,19 +19,25 @@
   <section>
     <div class="Input-container">
       <form action="/api/Historial" method="post">
-        <label for="ID">ID del vehiculo:</label>
-        <input type="text" id="ID" name="ID"><br><br>
-          
-        <label for="fechain">Fecha (YYYY-MM-DD):</label>
-        <input type="date" id="fechain" name="fechain"><br><br>
-          
-        <label for="appt">Seleccione el tiempo inicial:</label>
-        <input type="time" id="appt" name="appt"></textarea><br><br>
-          
-        <label for="apptf">Seleccione el tiempo final:</label>
-        <input type="time" id="appft" name="apptf"></textarea><br><br>
-    
-        
+        <input type="text" name="datetimes" />
+
+        <script>
+        $(function() {
+          $('input[name="datetimes"]').daterangepicker({
+            "minYear": 2023,
+            "timePicker": true,
+            "timePicker24Hour": true,
+            "timePickerIncrement": 5,
+            "startDate": "2023/03/06",
+            "endDate": "2023/03/15",
+            startDate: moment().startOf('hour'),
+            endDate: moment().startOf('hour').add(32, 'hour'),
+            locale: {
+              format: 'YYYY/MM/DD hh:mm:ss'
+            }
+          });
+        });
+        </script>
       </form>
       <input type="submit" value="Send">
         <button id = "returnToHome">Regresar</button>
