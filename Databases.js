@@ -80,6 +80,24 @@ class Database {
           console.error("Error al crear una nueva query:", error);
         }
       },
+      GetQueryRange: async function(startDateTime, endDateTime) {
+        try {
+          var startDate = startDateTime.split(' ');
+          var endDate = endDateTime.split(' ');
+          const registros = await this.Registro.findAll({
+            where: {
+              [Op.and]: [
+                { fecha: { [Op.between]: [startDate[0], endDate[0]] } },
+                { hora: { [Op.between]: [startDate[1], endDate[1]] } }
+              ]
+            }
+          });
+    
+          return registros;
+        } catch (error) {
+          console.error("Error al obtener datos por rango de fecha y hora:", error);
+        }
+      },
     };
   }
 
