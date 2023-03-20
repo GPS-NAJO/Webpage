@@ -1,6 +1,11 @@
 var nav = L.map("nav");
 var marker = null;
 var coordenadas = [];
+const carritoIcon = L.icon({
+  iconUrl: "assets/carmapa.png",
+  iconSize: [28, 28],
+  iconAnchor: [20, 20],
+});
 
 function getData(callback) {
   $.ajax("/api/gps", {
@@ -35,7 +40,9 @@ async function init() {
     }).addTo(map);
 
     // Crea un control de rutas y agrega la ruta al mapa
-    marker = L.marker(coordenadas[coordenadas.length - 1]).addTo(nav);
+    marker = L.marker(coordenadas[coordenadas.length - 1], {
+      icon: carritoIcon,
+    }).addTo(nav);
 
     setInterval(() => {
       getData(function (datos) {
