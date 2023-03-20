@@ -7,10 +7,11 @@ var udplistener = require("./listener/index");
 var homeRouter = require("./routes/home");
 var app = express();
 var { message } = require("./listener/index.js");
+var Database = require("./Databases.js");
 //pruebacamar
 const { parse } = require("path");
 // view engine setup
-
+const database = new Database();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
@@ -68,4 +69,14 @@ app.get("/api/gps", (req, res) => {
   }
 });
 
+app.get("api/historicos", async (req,res) =>{
+  const startTime = req.query.startTime;
+  const endTime = req.query.endTIme;
+  const datos = await database.registroHandler.GetQueryRange(startTime,endTime);
+    
+  console.log(datos);
+  datos.forEach((registro) => {
+  console.log(registro.dataValues);
+});
+})
 module.exports = app;

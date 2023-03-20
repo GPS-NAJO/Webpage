@@ -1,5 +1,6 @@
 const Sequelize = require("sequelize");
 const { DataTypes } = require("sequelize");
+const { Op } = require("sequelize");
 require("dotenv").config();
 
 class Database {
@@ -56,7 +57,7 @@ class Database {
           const valores = data.split(";");
           const timestamp = parseInt(valores[3], 10);
           const fecha = new Date(timestamp);
-          const fechaLegible = fecha.toLocaleString();
+          const fechaLegible = fecha.toLocaleString({hourCycle:'h23'});
           const fechas = fechaLegible.split(",");
           const newRegistro = {
             ident: valores[4],
@@ -80,7 +81,7 @@ class Database {
           console.error("Error al crear una nueva query:", error);
         }
       },
-      GetQueryRange: async function(startDateTime, endDateTime) {
+      GetQueryRange: async (startDateTime, endDateTime) => {
         try {
           var startDate = startDateTime.split(' ');
           var endDate = endDateTime.split(' ');
