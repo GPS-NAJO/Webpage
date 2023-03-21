@@ -58,8 +58,7 @@ app.get("/api/gps", (req, res) => {
           timestamp: parseInt(gpsdata[3], 10),
           id: gpsdata[4],
         };
-        res.setHeader("Content-Type", "application/json");
-        res.end(JSON.stringify(gpsjson));
+        res.json(gpsjson);
       }
     } catch (err) {
       console.error(err);
@@ -77,7 +76,6 @@ app.get("/api/historicos", async (req,res) =>{
     const fechaB = new Date(b.date + "T" + b.time);
     return fechaA - fechaB;
     });
-  console.log(datos);
   res.json(datos);
 })
 module.exports = app;
