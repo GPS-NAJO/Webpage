@@ -7,10 +7,11 @@ var udplistener = require("./listener/index");
 var homeRouter = require("./routes/home");
 var app = express();
 var { message } = require("./listener/index.js");
+var Database = require("./Databases.js");
 //pruebacamar
 const { parse } = require("path");
 // view engine setup
-
+const database = new Database();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
@@ -45,8 +46,7 @@ app.get("/api/gps", (req, res) => {
       timestamp: timestamp,
       id: id,
     };
-    res.setHeader("Content-Type", "application/json");
-    res.end(JSON.stringify(gpsjson));
+    res.json(gpsjson);
   } else {
     try {
       if (message.value != null) {
@@ -58,8 +58,7 @@ app.get("/api/gps", (req, res) => {
           timestamp: parseInt(gpsdata[3], 10),
           id: gpsdata[4],
         };
-        res.setHeader("Content-Type", "application/json");
-        res.end(JSON.stringify(gpsjson));
+        res.json(gpsjson);
       }
     } catch (err) {
       console.error(err);
@@ -68,4 +67,15 @@ app.get("/api/gps", (req, res) => {
   }
 });
 
+app.get("/api/historicos", async (req,res) =>{
+  const startTime = req.query.startTime;
+  const endTime = req.query.endTime;
+  const datos = await database.registroHandler.GetQueryRange(startTime,endTime);
+  datos.sort(function(a,b){
+    const fechaA = new Date(a.date + "T" + a.time);
+    const fechaB = new Date(b.date + "T" + b.time);
+    return fechaA - fechaB;
+    });
+  res.json(datos);
+})
 module.exports = app;

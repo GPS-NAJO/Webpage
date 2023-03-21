@@ -1,5 +1,6 @@
 const Sequelize = require("sequelize");
 const { DataTypes } = require("sequelize");
+const { Op } = require("sequelize");
 require("dotenv").config();
 
 class Database {
@@ -56,7 +57,7 @@ class Database {
           const valores = data.split(";");
           const timestamp = parseInt(valores[3], 10);
           const fecha = new Date(timestamp);
-          const fechaLegible = fecha.toLocaleString();
+          const fechaLegible = fecha.toLocaleString({hourCycle:'h23'});
           const fechas = fechaLegible.split(",");
           const newRegistro = {
             ident: valores[4],
@@ -80,24 +81,49 @@ class Database {
           console.error("Error al crear una nueva query:", error);
         }
       },
-      GetQueryRange: async function(startDateTime, endDateTime) {
+      GetQueryRange: async (startDateTime, endDateTime) => {
         try {
           var startDate = startDateTime.split(' ');
           var endDate = endDateTime.split(' ');
           const registros = await this.Registro.findAll({
             where: {
-              [Op.and]: [
-                { fecha: { [Op.between]: [startDate[0], endDate[0]] } },
-                { hora: { [Op.between]: [startDate[1], endDate[1]] } }
+              fecha: {
+                [Op.between]: [startDate[0], endDate[0]]
+              },
+              [Op.or]: [
+                {
+                  fecha: startDate[0],
+                  hora: {
+                    [Op.gte]: startDate[1]
+                  }
+                },
+                {
+                  fecha: {
+                    [Op.gt]: startDate[0]
+                  }
+                }
+              ],
+              [Op.or]: [
+                {
+                  fecha: endDate[0],
+                  hora: {
+                    [Op.lte]: endDate[1]
+                  }
+                },
+                {
+                  fecha: {
+                    [Op.lt]: endDate[0]
+                  }
+                }
               ]
-            }
+            },
+            raw: true
           });
-    
-          return registros;
-        } catch (error) {
-          console.error("Error al obtener datos por rango de fecha y hora:", error);
-        }
-      },
+        return registros;
+      } catch (error) {
+        console.error("Error al obtener datos por rango de fecha y hora:", error);
+      }
+    },
     };
   }
 
