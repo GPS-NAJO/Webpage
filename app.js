@@ -77,6 +77,7 @@ app.get("/api/historicos", async (req,res) =>{
     const fechaB = new Date(b.date + "T" + b.time);
     return fechaA - fechaB;
     });
+  console.log(datos);
   res.json(datos);
 })
 module.exports = app;

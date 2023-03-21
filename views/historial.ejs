@@ -38,6 +38,15 @@
     />
   </head>
   <body>
+    <div id="nav"></div>
+    <script>
+      var nav = L.map("nav").setView([51.505, -0.09], 13);
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution:
+          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      }).addTo(nav);
+    </script>
     <section>
       <div class="Input-container">
           <input type="text" name="datetimes" />
@@ -73,29 +82,53 @@
                     .endDate.format("YYYY/MM/DD HH:mm:ss"),
                 },
                 success: function (data) {
-                  console.log(data);
+                  let coordenadas = [];
+                  let coord = [];
+                  for (var i=0; i<data.length ; i++) {
+                    console.log(data)
+                    coord = [data[i].latitud, data[i].longitud];
+                    coordenadas.push(coord);
+                  }
+
+                  // Get a reference to the previously drawn polyline and marker, if they exist
+                  const previousPolyline = nav.previousPolyline;
+                  const previousMarker = nav.previousMarker;
+
+                  // Remove the previously drawn polyline and marker from the map, if they exist
+                  if (previousPolyline) {
+                    previousPolyline.remove();
+                  }
+                  if (previousMarker) {
+                    previousMarker.remove();
+                  }
+
+                  // Create the new polyline and add it to the map
+                  const newPolyline = L.polyline(
+                    coordenadas,
+                    {
+                      color: "red",
+                    }
+                  ).addTo(nav);
+                  
+                  // Set the view of the map and add a marker at the last coordinate
+                  nav.setView(coord, 15);
+                  const newMarker = L.marker(coordenadas[coordenadas.length - 1]).addTo(nav);
+                  
+                  // Store the new polyline and marker in properties of the map object
+                  nav.previousPolyline = newPolyline;
+                  nav.previousMarker = newMarker;
                 },
               });
             });
           });
         </script>
         <button id="returnToHome">Regresar</button>
+        <script>
+          document.getElementById("returnToHome").addEventListener("click", () => {
+            window.location.href = "/";
+          });
+        </script>
       </div>
     </section>
-    <div id="mapa"></div>
-
-    <script>
-      var mapa = L.map("mapa").setView([51.505, -0.09], 13);
-      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 19,
-        attribution:
-          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      }).addTo(mapa);
-    </script>
-    <script>
-      document.getElementById("returnToHome").addEventListener("click", () => {
-        window.location.href = "/";
-      });
-    </script>
   </body>
 </html>
