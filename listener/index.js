@@ -13,6 +13,7 @@ function Listener() {
       `El listener UDP está escuchando en ${address.address}:${address.port}`
     );
     await database.connection();
+
   });
 
   //Imprime mensaje en consola para efectos de depuracion

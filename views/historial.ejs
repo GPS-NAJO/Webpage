@@ -1,51 +1,134 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Historial de rutas</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-    integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
-    crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
-    crossorigin=""></script>
-</head>
-<body>
-  <h2>Ingrese la ventana de tiempo deseada</h1>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+      integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+      crossorigin=""
+    />
+    <script
+      src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+      integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+      crossorigin=""
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/stylesheets/styles.css"
+      media="screen"
+    />
+  </head>
+  <body>
+    <div id="nav"></div>
+    <script>
+      var nav = L.map("nav").setView([51.505, -0.09], 13);
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution:
+          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      }).addTo(nav);
+    </script>
+    <section>
+      <div class="Input-container">
+          <input type="text" name="datetimes" />
+          <script>
+            $(function () {
+              $('input[name="datetimes"]').daterangepicker({
+                timePicker: true,
+                timePicker24Hour: true,
+                timePickerIncrement: 5,
+                locale: {
+                  format: "YYYY/MM/DD HH:mm:ss",
+                },
+                minDate: "2023/03/06 09:00:00",
+                maxDate: new Date(),
+                startDate: moment().startOf("hour"),
+                endDate: moment().startOf("hour").add(32, "hour"),
+              });
+            });
+          </script>
+        <input type="button" value="Send" id="sendBtn" />
+        <script>
+          $(function () {
+            $("#sendBtn").click(function () {
+              console.log("endTime:", $('input[name="datetimes"]').data("daterangepicker").endDate.format("YYYY/MM/DD HH:mm:ss"));
+              $.ajax({
+                url: "/api/historicos",
+                data: {
+                  startTime: $('input[name="datetimes"]')
+                    .data("daterangepicker")
+                    .startDate.format("YYYY/MM/DD HH:mm:ss"),
+                  endTime: $('input[name="datetimes"]')
+                    .data("daterangepicker")
+                    .endDate.format("YYYY/MM/DD HH:mm:ss"),
+                },
+                success: function (data) {
+                  let coordenadas = [];
+                  let coord = [];
+                  for (var i=0; i<data.length ; i++) {
+                    console.log(data)
+                    coord = [data[i].latitud, data[i].longitud];
+                    coordenadas.push(coord);
+                  }
 
-  <section>
-    <div class="Input-container">
-      <form action="/api/Historial" method="post">
-        <label for="ID">ID del vehiculo:</label>
-        <input type="text" id="ID" name="ID"><br><br>
-          
-        <label for="fechain">Fecha (YYYY-MM-DD):</label>
-        <input type="date" id="fechain" name="fechain"><br><br>
-          
-        <label for="appt">Seleccione el tiempo inicial:</label>
-        <input type="time" id="appt" name="appt"></textarea><br><br>
-          
-        <label for="apptf">Seleccione el tiempo final:</label>
-        <input type="time" id="appft" name="apptf"></textarea><br><br>
-    
-        <input type="submit" value="Send">
-        <button id = "returnToHome">Regresar</button>
-      </form>
-    </div>
-  </section>  
-  <div id="mapa" style="width: 800px; height: 440px; border: 1px solid #aaa;"></div>
+                  // Get a reference to the previously drawn polyline and marker, if they exist
+                  const previousPolyline = nav.previousPolyline;
+                  const previousMarker = nav.previousMarker;
 
-  <script>
-    var mapa = L.map('mapa').setView([51.505, -0.09], 13);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-   }).addTo(mapa);
-  </script>
-  <script>
-      document.getElementById('returnToHome').addEventListener('click',
-      () => {
-        window.location.href = '/';
-        })
-  </script>
-</body>
+                  // Remove the previously drawn polyline and marker from the map, if they exist
+                  if (previousPolyline) {
+                    previousPolyline.remove();
+                  }
+                  if (previousMarker) {
+                    previousMarker.remove();
+                  }
+
+                  // Create the new polyline and add it to the map
+                  const newPolyline = L.polyline(
+                    coordenadas,
+                    {
+                      color: "red",
+                    }
+                  ).addTo(nav);
+                  
+                  // Set the view of the map and add a marker at the last coordinate
+                  nav.setView(coord, 15);
+                  const newMarker = L.marker(coordenadas[coordenadas.length - 1]).addTo(nav);
+                  
+                  // Store the new polyline and marker in properties of the map object
+                  nav.previousPolyline = newPolyline;
+                  nav.previousMarker = newMarker;
+                },
+              });
+            });
+          });
+        </script>
+        <button id="returnToHome">Regresar</button>
+        <script>
+          document.getElementById("returnToHome").addEventListener("click", () => {
+            window.location.href = "/";
+          });
+        </script>
+      </div>
+    </section>
+  </body>
 </html>

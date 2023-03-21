@@ -22,16 +22,37 @@
     />
   </head>
 
-  <body>
+  <body class="main">
     <div class="texto">
-      <h1>HOLA GPS-NAJO</h1>
-      <h1>LAT: <span id="latitud"></span></h1>
-      <h1>LONG: <span id="longitud"></span></h1>
-      <h1>FECHA: <span id="fecha"></span></h1>
-      <h1>HORA: <span id="hora"></span></h1>
-      <h1>ID: <span id="id"></span></h1>
-      <button id = "historico">Historial de ruta</button>
+      <div class="latitud">
+        <img src="assets/latitud.png" class="laticon" />
+        <h3 class="lat">Latitud:</h3>
+        <h1><span id="latitud"></span></h1>
+      </div>
+
+      <div class="longitud">
+        <img src="assets/longitud.png" class="lonicon" />
+        <h3 class="long">Longitud:</h3>
+        <h1><span id="longitud"></span></h1>
+      </div>
+      <div class="time">
+        <img src="assets\reloj32.png" class="reloj" />
+        <h1><span id="hora"></span></h1>
+        <h1><span id="fecha"></span></h1>
+      </div>
+      <div class="id">
+        <img src="assets/carro30.png" class="carro" />
+        <h1><span id="id"></span></h1>
+      </div>
     </div>
+
+    <button id="historico">
+      <img src="assets/calendario29.png" class="calendar" /> Consultar
+      historicos
+    </button>
+    <button id="idselector">
+      <img src="assets/carros27.png" class="carros" />
+    </button>
 
     <div id="nav"></div>
     <script
@@ -40,10 +61,9 @@
       crossorigin=""
     ></script>
     <script>
-      document.getElementById('historico').addEventListener('click',
-      () => {
-        window.location.href = '/historial';
-        })
+      document.getElementById("historico").addEventListener("click", () => {
+        window.location.href = "/historial";
+      });
     </script>
     <script src="/scripts/index.js"></script>
   </body>
