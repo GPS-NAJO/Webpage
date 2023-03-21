@@ -40,40 +40,37 @@
   <body>
     <section>
       <div class="Input-container">
-        <form action="/api/Historial" method="post">
           <input type="text" name="datetimes" />
-
           <script>
             $(function () {
               $('input[name="datetimes"]').daterangepicker({
-                minYear: 2023,
                 timePicker: true,
                 timePicker24Hour: true,
                 timePickerIncrement: 5,
-                startDate: "2023/03/06",
-                endDate: "2023/03/15",
+                locale: {
+                  format: "YYYY/MM/DD HH:mm:ss",
+                },
+                minDate: "2023/03/06 09:00:00",
+                maxDate: new Date(),
                 startDate: moment().startOf("hour"),
                 endDate: moment().startOf("hour").add(32, "hour"),
-                locale: {
-                  format: "YYYY/MM/DD hh:mm:ss",
-                },
               });
             });
           </script>
-        </form>
         <input type="button" value="Send" id="sendBtn" />
         <script>
           $(function () {
             $("#sendBtn").click(function () {
+              console.log("endTime:", $('input[name="datetimes"]').data("daterangepicker").endDate.format("YYYY/MM/DD HH:mm:ss"));
               $.ajax({
                 url: "/api/historicos",
                 data: {
                   startTime: $('input[name="datetimes"]')
                     .data("daterangepicker")
-                    .startDate.format("YYYY/MM/DD hh:mm:ss"),
+                    .startDate.format("YYYY/MM/DD HH:mm:ss"),
                   endTime: $('input[name="datetimes"]')
                     .data("daterangepicker")
-                    .endDate.format("YYYY/MM/DD hh:mm:ss"),
+                    .endDate.format("YYYY/MM/DD HH:mm:ss"),
                 },
                 success: function (data) {
                   console.log(data);

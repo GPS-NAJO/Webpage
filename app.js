@@ -46,8 +46,7 @@ app.get("/api/gps", (req, res) => {
       timestamp: timestamp,
       id: id,
     };
-    res.setHeader("Content-Type", "application/json");
-    res.end(JSON.stringify(gpsjson));
+    res.json(gpsjson);
   } else {
     try {
       if (message.value != null) {
@@ -69,14 +68,15 @@ app.get("/api/gps", (req, res) => {
   }
 });
 
-app.get("api/historicos", async (req,res) =>{
+app.get("/api/historicos", async (req,res) =>{
   const startTime = req.query.startTime;
-  const endTime = req.query.endTIme;
+  const endTime = req.query.endTime;
   const datos = await database.registroHandler.GetQueryRange(startTime,endTime);
-    
-  console.log(datos);
-  datos.forEach((registro) => {
-  console.log(registro.dataValues);
-});
+  datos.sort(function(a,b){
+    const fechaA = new Date(a.date + "T" + a.time);
+    const fechaB = new Date(b.date + "T" + b.time);
+    return fechaA - fechaB;
+    });
+  res.json(datos);
 })
 module.exports = app;
