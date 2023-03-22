@@ -68,6 +68,7 @@
           </script>
         <input type="button" value="Send" id="sendBtn" />
         <script>
+          let datos = [];
           $(function () {
             $("#sendBtn").click(function () {
               console.log("endTime:", $('input[name="datetimes"]').data("daterangepicker").endDate.format("YYYY/MM/DD HH:mm:ss"));
@@ -83,6 +84,7 @@
                 },
                 success: function (data) {
                   let coordenadas = [];
+                  datos = data;
                   let coord = [];
                   for (var i=0; i<data.length ; i++) {
                     coord = [data[i].latitud, data[i].longitud];
@@ -120,6 +122,22 @@
               });
             });
           });
+
+          function puntoDentroRadio(coordenada,centro,radio){
+            return (coordenada.latitud - centro.lat) **2 + (coordenada.longitud - centro.lng) ** 2 <= radio **2;
+          }
+          function onClickMapa(e, radio){
+            const PuntoCentral = e.latlng;
+            console.log(PuntoCentral);
+            const puntosEncontrados = datos.filter(p => puntoDentroRadio(p,PuntoCentral,radio));
+            if (puntosEncontrados.length > 0){
+              console.log(puntosEncontrados);
+            }else{
+              //TODO 
+              //popup
+            }
+          }
+          nav.on('click', e => onClickMapa(e,0.002));
         </script>
         <button id="returnToHome">Regresar</button>
         <script>

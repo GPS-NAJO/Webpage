@@ -57,7 +57,7 @@ class Database {
           const valores = data.split(";");
           const timestamp = parseInt(valores[3], 10);
           const fecha = new Date(timestamp);
-          const fechaLegible = fecha.toLocaleString({hourCycle:'h23'});
+          const fechaLegible = fecha.toLocaleString({ hour: 'numeric', minute: 'numeric', hour12: false });
           const fechas = fechaLegible.split(",");
           const newRegistro = {
             ident: valores[4],
@@ -87,35 +87,9 @@ class Database {
           var endDate = endDateTime.split(' ');
           const registros = await this.Registro.findAll({
             where: {
-              fecha: {
-                [Op.between]: [startDate[0], endDate[0]]
-              },
-              [Op.or]: [
-                {
-                  fecha: startDate[0],
-                  hora: {
-                    [Op.gte]: startDate[1]
-                  }
-                },
-                {
-                  fecha: {
-                    [Op.gt]: startDate[0]
-                  }
-                }
-              ],
-              [Op.or]: [
-                {
-                  fecha: endDate[0],
-                  hora: {
-                    [Op.lte]: endDate[1]
-                  }
-                },
-                {
-                  fecha: {
-                    [Op.lt]: endDate[0]
-                  }
-                }
-              ]
+              fecha: {[Op.between]: [startDate[0], endDate[0]]},
+              [Op.or]: [{fecha: startDate[0],hora: {[Op.gte]: startDate[1]}},{fecha: {[Op.gt]: startDate[0]}}],
+              [Op.or]: [{fecha: endDate[0],hora: {[Op.lte]: endDate[1]}},{fecha: {[Op.lt]: endDate[0]}}]
             },
             raw: true
           });
