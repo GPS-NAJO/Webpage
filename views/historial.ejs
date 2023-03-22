@@ -77,6 +77,9 @@
           });
         </script>
         <div id="slider"></div>
+        <div>
+          <span id="display"></span>
+        </div>
         <script>
           let datos = [];
           let circle;
@@ -138,6 +141,7 @@
 
           noUiSlider.create(stepSlider, {
                   start: [0],
+                  behaviour: 'smooth-steps-tap-snap',
                   step: 1,
                   range: {
                       'min': [0],
@@ -182,12 +186,27 @@
 
               var format = {
               to: function(value) {
-                  return valuesForSlider[Number(value)];
+                  return valuesForSlider[Math.round(value)];
               },
               from: function (value) {
                   return valuesForSlider.indexOf(Number(value));
               }
               };
+
+              slider.noUiSlider.on('change', function(){
+                
+                var display_index = Math.round(slider.noUiSlider.get(true))
+                document.getElementById("display").textContent=puntosEncontrados[display_index].fecha + " " +puntosEncontrados[display_index].hora;
+                const previousMarker = nav.previousMarker;
+
+                if (previousMarker) {
+                  previousMarker.remove();
+                }
+                  
+                const newMarker = L.marker([puntosEncontrados[display_index].latitud, puntosEncontrados[display_index].longitud]).addTo(nav);
+                nav.previousMarker = newMarker;
+
+              });
               console.log(puntosEncontrados);
               console.log(valuesForSlider);
             }else{
