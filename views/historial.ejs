@@ -43,7 +43,7 @@
   <body>
     <div id="nav"></div>
     <script>
-      var nav = L.map("nav").setView([51.505, -0.09], 13);
+      var nav = L.map("nav").setView([11.019, -74.81], 13);
       L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 19,
         attribution:
@@ -136,23 +136,24 @@
               });
             });
           });
-          
           var stepSlider = document.getElementById('slider');
-
           noUiSlider.create(stepSlider, {
-                  start: [0],
-                  behaviour: 'smooth-steps-tap-snap',
-                  step: 1,
-                  range: {
-                      'min': [0],
-                      'max': [10]
-                  }
+                start: [0],
+                behaviour: 'smooth-steps-tap-snap',
+                step: 1,
+                range: {
+                    'min': [0],
+                    'max': [10]
+                }
               });
-
+          slider.noUiSlider.disable();
           function puntoDentroRadio(coordenada,centro,radio){
             return (coordenada.latitud - centro.lat) **2 + (coordenada.longitud - centro.lng) ** 2 <= radio **2;
           }
           function onClickMapa(e){
+                      
+         
+
             const zoomLevel = nav.getZoom(); // get the current zoom level of the map
             const radio = 0.002 * Math.pow(2, 22 - zoomLevel); // calculate the radius based on the zoom level
 
@@ -176,14 +177,20 @@
               for (var i=0; i<puntosEncontrados.length ; i++) {
                 valuesForSlider.push(i);
               }
-
-              slider.noUiSlider.updateOptions({
+              if(stepSlider){
+                slider.noUiSlider.destroy();
+                
+              }
+              noUiSlider.create(stepSlider, {
+                start: [0],
+                behaviour: 'smooth-steps-tap-snap',
+                step: 1,
                 range: {
                     'min': [0],
-                    'max': [puntosEncontrados.length -1]
+                    'max': [puntosEncontrados.length-1]
                 }
               });
-
+              slider.noUiSlider.enable();
               var format = {
               to: function(value) {
                   return valuesForSlider[Math.round(value)];
