@@ -69,6 +69,7 @@
         <input type="button" value="Send" id="sendBtn" />
         <script>
           let datos = [];
+          let circle;
           $(function () {
             $("#sendBtn").click(function () {
               console.log("endTime:", $('input[name="datetimes"]').data("daterangepicker").endDate.format("YYYY/MM/DD HH:mm:ss"));
@@ -126,10 +127,23 @@
           function puntoDentroRadio(coordenada,centro,radio){
             return (coordenada.latitud - centro.lat) **2 + (coordenada.longitud - centro.lng) ** 2 <= radio **2;
           }
-          function onClickMapa(e, radio){
+          function onClickMapa(e){
+            const zoomLevel = nav.getZoom(); // get the current zoom level of the map
+            const radio = 0.002 * Math.pow(2, 22 - zoomLevel); // calculate the radius based on the zoom level
+
             const PuntoCentral = e.latlng;
+            const radio_latitud = radio / 110.574
+            if (circle) {
+              circle.remove();
+            }
+            circle = L.circle(PuntoCentral, {
+                  color: '#4c007d',
+                  fillColor: '#bc4ed8',
+                  fillOpacity: 0.3,
+                  radius: radio_latitud * 111000
+              }).addTo(nav);
             console.log(PuntoCentral);
-            const puntosEncontrados = datos.filter(p => puntoDentroRadio(p,PuntoCentral,radio));
+            const puntosEncontrados = datos.filter(p => puntoDentroRadio(p,PuntoCentral,radio_latitud));
             if (puntosEncontrados.length > 0){
               console.log(puntosEncontrados);
             }else{
@@ -137,7 +151,7 @@
               //popup
             }
           }
-          nav.on('click', e => onClickMapa(e,0.002));
+          nav.on('click', e => onClickMapa(e));
         </script>
         <button id="returnToHome">Regresar</button>
         <script>
