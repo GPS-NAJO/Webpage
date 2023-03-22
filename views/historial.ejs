@@ -36,6 +36,9 @@
       href="/stylesheets/styles.css"
       media="screen"
     />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.js"></script>
+
   </head>
   <body>
     <div id="nav"></div>
@@ -67,6 +70,13 @@
             });
           </script>
         <input type="button" value="Send" id="sendBtn" />
+        <button id="returnToHome">Regresar</button>
+        <script>
+          document.getElementById("returnToHome").addEventListener("click", () => {
+            window.location.href = "/";
+          });
+        </script>
+        <div id="slider"></div>
         <script>
           let datos = [];
           let circle;
@@ -123,6 +133,17 @@
               });
             });
           });
+          
+          var stepSlider = document.getElementById('slider');
+
+          noUiSlider.create(stepSlider, {
+                  start: [0],
+                  step: 1,
+                  range: {
+                      'min': [0],
+                      'max': [10]
+                  }
+              });
 
           function puntoDentroRadio(coordenada,centro,radio){
             return (coordenada.latitud - centro.lat) **2 + (coordenada.longitud - centro.lng) ** 2 <= radio **2;
@@ -145,19 +166,36 @@
             console.log(PuntoCentral);
             const puntosEncontrados = datos.filter(p => puntoDentroRadio(p,PuntoCentral,radio_latitud));
             if (puntosEncontrados.length > 0){
+              
+              var valuesForSlider = [];
+
+              for (var i=0; i<puntosEncontrados.length ; i++) {
+                valuesForSlider.push(i);
+              }
+
+              slider.noUiSlider.updateOptions({
+                range: {
+                    'min': [0],
+                    'max': [puntosEncontrados.length -1]
+                }
+              });
+
+              var format = {
+              to: function(value) {
+                  return valuesForSlider[Number(value)];
+              },
+              from: function (value) {
+                  return valuesForSlider.indexOf(Number(value));
+              }
+              };
               console.log(puntosEncontrados);
+              console.log(valuesForSlider);
             }else{
               //TODO 
               //popup
             }
           }
           nav.on('click', e => onClickMapa(e));
-        </script>
-        <button id="returnToHome">Regresar</button>
-        <script>
-          document.getElementById("returnToHome").addEventListener("click", () => {
-            window.location.href = "/";
-          });
         </script>
       </div>
     </section>
