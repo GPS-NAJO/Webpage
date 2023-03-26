@@ -1,4 +1,3 @@
-
 var nav = L.map("nav").setView([11.019, -74.81], 13);
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
