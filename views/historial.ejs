@@ -69,22 +69,33 @@
               });
             });
           </script>
-        <input type="button" value="Send" id="sendBtn" />
+        <input type="button" value="Solicitar" id="sendBtn" />
         <button id="returnToHome">Regresar</button>
+        <br>
+        <br>
         <script>
           document.getElementById("returnToHome").addEventListener("click", () => {
             window.location.href = "/";
           });
         </script>
         <div id="slider"></div>
+        <br>
+        <div id="sliderZoom"></div>
+        <br>
         <div>
           <span id="display"></span>
         </div>
+        
         <script>
           let datos = [];
           let circle;
+          let puntosEncontrados = [];
           $(function () {
             $("#sendBtn").click(function () {
+              puntosEncontrados = [];
+              if (circle) {
+              circle.remove();
+              }
               console.log("endTime:", $('input[name="datetimes"]').data("daterangepicker").endDate.format("YYYY/MM/DD HH:mm:ss"));
               $.ajax({
                 url: "/api/historicos",
@@ -145,8 +156,19 @@
                     'min': [0],
                     'max': [10]
                 }
-              });
-          slider.noUiSlider.disable();
+          });
+          stepSlider.noUiSlider.disable();
+          var stepSliderZoom = document.getElementById('sliderZoom');
+          noUiSlider.create(stepSliderZoom, {
+                start: 0,
+                behaviour: 'smooth-steps-tap-snap',
+                step: 1,
+                range: {
+                    'min': 0,
+                    'max': 20
+                }
+          });
+          stepSliderZoom.noUiSlider.disable();
           function puntoDentroRadio(coordenada,centro,radio){
             return (coordenada.latitud - centro.lat) **2 + (coordenada.longitud - centro.lng) ** 2 <= radio **2;
           }
@@ -169,7 +191,7 @@
                   radius: radio_latitud * 111000
               }).addTo(nav);
             console.log(PuntoCentral);
-            const puntosEncontrados = datos.filter(p => puntoDentroRadio(p,PuntoCentral,radio_latitud));
+            puntosEncontrados = datos.filter(p => puntoDentroRadio(p,PuntoCentral,radio_latitud));
             if (puntosEncontrados.length > 0){
               
               var valuesForSlider = [];
@@ -178,7 +200,7 @@
                 valuesForSlider.push(i);
               }
               if(stepSlider){
-                slider.noUiSlider.destroy();
+                stepSlider.noUiSlider.destroy();
                 
               }
               noUiSlider.create(stepSlider, {
@@ -190,7 +212,8 @@
                     'max': [puntosEncontrados.length-1]
                 }
               });
-              slider.noUiSlider.enable();
+              stepSlider.noUiSlider.enable();
+              stepSliderZoom.noUiSlider.enable();
               var format = {
               to: function(value) {
                   return valuesForSlider[Math.round(value)];
@@ -200,9 +223,9 @@
               }
               };
 
-              slider.noUiSlider.on('change', function(){
+              stepSlider.noUiSlider.on('change', function(){
                 
-                var display_index = Math.round(slider.noUiSlider.get(true))
+                var display_index = Math.round(stepSlider.noUiSlider.get(true))
                 document.getElementById("display").textContent=puntosEncontrados[display_index].fecha + " " +puntosEncontrados[display_index].hora;
                 const previousMarker = nav.previousMarker;
 
