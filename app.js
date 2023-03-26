@@ -25,7 +25,10 @@ app.use(express.static(path.join(__dirname, "public")));
 udplistener.Listener();
 
 app.use("/", homeRouter);
-
+app.get('/public/scripts/Historicos.js', function(req, res) {
+  res.set('Content-Type', 'text/javascript');
+  res.sendFile(path.join(__dirname, 'public', 'scripts', 'Historicos.js'));
+});
 app.get("/api/gps", (req, res) => {
   if (process.argv.includes("--d")) {
     const minLatitude = 10.923518;
