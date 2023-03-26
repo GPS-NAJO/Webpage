@@ -105,12 +105,12 @@ class Database {
     try {
       await this.sequelize.authenticate();
       console.log("Connection has been established successfully.");
-      // Crear la base de datos y la tabla si no existen
+      // Create db and table if they don't exist
       await this.sequelize.query("CREATE DATABASE IF NOT EXISTS Tracker;");
       await this.Registro.sync({ alter: true });
       console.log("Database and table created successfully.");
 
-      // Devolver la instancia de Sequelize
+      // Return sequelize instance
       return this.sequelize;
     } catch (error) {
       console.error("Unable to connect to the database:", error);

@@ -6,7 +6,7 @@ const message = new Message();
 const database = new Database();
 
 function Listener() {
-  // Inicia el listener que escucha para los datos udp provenientes de la app
+  // Initiates the listener that listens the data coming from the app
   listener.on("listening", async () => {
     const address = listener.address();
     console.log(
@@ -16,7 +16,7 @@ function Listener() {
 
   });
 
-  //Imprime mensaje en consola para efectos de depuracion
+  // Prints the message in the console for debugging
   listener.on("message", (msg, rinfo) => {
     console.log(
       `Mensaje recibido desde ${rinfo.address}:${rinfo.port}: ${msg}`
@@ -25,7 +25,7 @@ function Listener() {
     database.registroHandler.createQuery(msg.toString("utf8"));
   });
 
-  // Vincula el puerto e ip
+  // Links the port and IP
   listener.bind(1001);
 }
 

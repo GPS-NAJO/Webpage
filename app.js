@@ -8,9 +8,9 @@ var homeRouter = require("./routes/home");
 var app = express();
 var { message } = require("./listener/index.js");
 var Database = require("./Databases.js");
-//pruebacamar
+
 const { parse } = require("path");
-// view engine setup
+//view engine setup
 const database = new Database();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");

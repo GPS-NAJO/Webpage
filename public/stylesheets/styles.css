@@ -108,14 +108,6 @@ body {
   align-items: center;
   }
 
-/* Botones */
-/*.tiemporeal{
-  position: absolute;
-			top: 70%;
-			left: 11%;
-			transform: translate(-50%, -50%);
-      background-color: blue;
-}*/
 #historico{
   position: fixed;
       top: 88%;
@@ -146,7 +138,7 @@ body {
   padding: 10px;
   padding-left: 20px
 }
-/* Mapa */
+/* Map */
 
 #nav,#mapa{
   height: calc(100vh - 15px);
@@ -155,7 +147,7 @@ body {
   left: 1%;
   position: static;
 }
- /* Historicos*/
+ /*Historic*/
 
 .Input-container{
   width: 350px;
