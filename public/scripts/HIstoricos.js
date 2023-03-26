@@ -26,11 +26,16 @@ document.getElementById("returnToHome").addEventListener("click", () => {
 let datos = [];
 let circle;
 let puntosEncontrados = [];
+let previousMarker;
+let newMarker;
 $(function () {
     $("#sendBtn").click(function () {
         puntosEncontrados = [];
         if (circle) {
             circle.remove();
+        }
+        if (previousMarker) {
+            previousMarker.remove();
         }
         console.log("endTime:", $('input[name="datetimes"]').data("daterangepicker").endDate.format("YYYY/MM/DD HH:mm:ss"));
         $.ajax({
@@ -54,7 +59,7 @@ $(function () {
 
                 // Get a reference to the previously drawn polyline and marker, if they exist
                 const previousPolyline = nav.previousPolyline;
-                const previousMarker = nav.previousMarker;
+                previousMarker = nav.previousMarker;
 
                 // Remove the previously drawn polyline and marker from the map, if they exist
                 if (previousPolyline) {
@@ -74,7 +79,7 @@ $(function () {
 
                 // Set the view of the map and add a marker at the last coordinate
                 nav.setView(coord, 15);
-                const newMarker = L.marker(coordenadas[coordenadas.length - 1]).addTo(nav);
+                newMarker = L.marker(coordenadas[coordenadas.length - 1]).addTo(nav);
 
                 // Store the new polyline and marker in properties of the map object
                 nav.previousPolyline = newPolyline;
@@ -163,21 +168,21 @@ function onClickMapa(e) {
 
             var display_index = Math.round(stepSlider.noUiSlider.get(true))
             document.getElementById("display").textContent = puntosEncontrados[display_index].fecha + " " + puntosEncontrados[display_index].hora;
-            const previousMarker = nav.previousMarker;
+            previousMarker = nav.previousMarker;
 
             if (previousMarker) {
                 previousMarker.remove();
             }
 
-            const newMarker = L.marker([puntosEncontrados[display_index].latitud, puntosEncontrados[display_index].longitud]).addTo(nav);
+            newMarker = L.marker([puntosEncontrados[display_index].latitud, puntosEncontrados[display_index].longitud]).addTo(nav);
             nav.previousMarker = newMarker;
 
         });
         console.log(puntosEncontrados);
         console.log(valuesForSlider);
     } else {
-        //TODO 
-        //popup
+        stepSliderZoom.noUiSlider.disable();
+        stepSlider.noUiSlider.disable();
     }
 }
 nav.on('click', e => onClickMapa(e));
