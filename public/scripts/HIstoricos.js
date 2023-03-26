@@ -1,9 +1,47 @@
+//////////////////////////////////
 var nav = L.map("nav").setView([11.019, -74.81], 13);
+let datos = [];
+let circle;
+let puntosEncontrados = [];
+let previousMarker;
+let newMarker;
+var stepSlider = document.getElementById('slider');
+var stepSliderZoom = document.getElementById('sliderZoom');
+
+
+noUiSlider.create(stepSlider, {
+    start: [0],
+    behaviour: 'smooth-steps-tap-snap',
+    step: 1,
+    range: {
+        'min': [0],
+        'max': [10]
+    }
+});
+noUiSlider.create(stepSliderZoom, {
+    start: 1,
+    behaviour: 'smooth-steps-tap-snap',
+    step: 1,
+    range: {
+        'min': 1,
+        'max': 10
+    }
+});
+document.getElementById("returnToHome").addEventListener("click", () => {
+    window.location.href = "/";
+});
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
     attribution:
         '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 }).addTo(nav);
+
+stepSlider.noUiSlider.disable();
+stepSliderZoom.noUiSlider.disable();
+
+
+//////////////////////////////////
+
 
 $(function () {
     $('input[name="datetimes"]').daterangepicker({
@@ -19,15 +57,8 @@ $(function () {
         endDate: moment().startOf("hour").add(32, "hour"),
     });
 });
-document.getElementById("returnToHome").addEventListener("click", () => {
-    window.location.href = "/";
-});
 
-let datos = [];
-let circle;
-let puntosEncontrados = [];
-let previousMarker;
-let newMarker;
+
 $(function () {
     $("#sendBtn").click(function () {
         puntosEncontrados = [];
@@ -37,7 +68,7 @@ $(function () {
         if (previousMarker) {
             previousMarker.remove();
         }
-        console.log("endTime:", $('input[name="datetimes"]').data("daterangepicker").endDate.format("YYYY/MM/DD HH:mm:ss"));
+
         $.ajax({
             url: "/api/historicos",
             data: {
@@ -52,11 +83,6 @@ $(function () {
                 let coordenadas = [];
                 datos = data;
                 let coord = [];
-                for (var i = 0; i < data.length; i++) {
-                    coord = [data[i].latitud, data[i].longitud];
-                    coordenadas.push(coord);
-                }
-
                 // Get a reference to the previously drawn polyline and marker, if they exist
                 const previousPolyline = nav.previousPolyline;
                 previousMarker = nav.previousMarker;
@@ -68,57 +94,46 @@ $(function () {
                 if (previousMarker) {
                     previousMarker.remove();
                 }
-
-                // Create the new polyline and add it to the map
-                const newPolyline = L.polyline(
-                    coordenadas,
-                    {
-                        color: "red",
+                if(data.length>0){
+                    for (var i = 0; i < data.length; i++) {
+                        coord = [data[i].latitud, data[i].longitud];
+                        coordenadas.push(coord);
                     }
-                ).addTo(nav);
-
-                // Set the view of the map and add a marker at the last coordinate
-                nav.setView(coord, 15);
-                newMarker = L.marker(coordenadas[coordenadas.length - 1]).addTo(nav);
-
-                // Store the new polyline and marker in properties of the map object
-                nav.previousPolyline = newPolyline;
-                nav.previousMarker = newMarker;
+                    // Create the new polyline and add it to the map
+                    const newPolyline = L.polyline(
+                        coordenadas,
+                        {
+                            color: "red",
+                        }
+                    ).addTo(nav);
+    
+                    // Set the view of the map and add a marker at the last coordinate
+                    nav.setView(coord, 15);
+                    newMarker = L.marker(coordenadas[coordenadas.length - 1]).addTo(nav);
+    
+                    // Store the new polyline and marker in properties of the map object
+                    nav.previousPolyline = newPolyline;
+                    nav.previousMarker = newMarker;
+                    nav.off('click');
+                    nav.on('click', e => onClickMapa(e));
+                }else{ 
+                    nav.off('click');
+                    stepSlider.noUiSlider.disable();
+                    stepSliderZoom.noUiSlider.disable();
+                }
+               
             },
         });
     });
 });
-var stepSlider = document.getElementById('slider');
-noUiSlider.create(stepSlider, {
-    start: [0],
-    behaviour: 'smooth-steps-tap-snap',
-    step: 1,
-    range: {
-        'min': [0],
-        'max': [10]
-    }
-});
-stepSlider.noUiSlider.disable();
-var stepSliderZoom = document.getElementById('sliderZoom');
-noUiSlider.create(stepSliderZoom, {
-    start: 0,
-    behaviour: 'smooth-steps-tap-snap',
-    step: 1,
-    range: {
-        'min': 0,
-        'max': 20
-    }
-});
-stepSliderZoom.noUiSlider.disable();
+
 function puntoDentroRadio(coordenada, centro, radio) {
     return (coordenada.latitud - centro.lat) ** 2 + (coordenada.longitud - centro.lng) ** 2 <= radio ** 2;
 }
 function onClickMapa(e) {
-
-
-
+    var zoom_slider = Math.round(stepSliderZoom.noUiSlider.get(true)) 
     const zoomLevel = nav.getZoom(); // get the current zoom level of the map
-    const radio = 0.002 * Math.pow(2, 22 - zoomLevel); // calculate the radius based on the zoom level
+    const radio = (0.002*zoom_slider) * Math.pow(2, 22 - zoomLevel); // calculate the radius based on the zoom level
 
     const PuntoCentral = e.latlng;
     const radio_latitud = radio / 110.574
@@ -131,7 +146,6 @@ function onClickMapa(e) {
         fillOpacity: 0.3,
         radius: radio_latitud * 111000
     }).addTo(nav);
-    console.log(PuntoCentral);
     puntosEncontrados = datos.filter(p => puntoDentroRadio(p, PuntoCentral, radio_latitud));
     if (puntosEncontrados.length > 0) {
 
@@ -178,11 +192,7 @@ function onClickMapa(e) {
             nav.previousMarker = newMarker;
 
         });
-        console.log(puntosEncontrados);
-        console.log(valuesForSlider);
     } else {
-        stepSliderZoom.noUiSlider.disable();
         stepSlider.noUiSlider.disable();
     }
 }
-nav.on('click', e => onClickMapa(e));
