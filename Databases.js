@@ -4,9 +4,12 @@ const { Op } = require("sequelize");
 require("dotenv").config();
 
 class Database {
+  
   constructor() {
+
     this.registros = [];
-    this.sequelize = new Sequelize(
+    //connects to the mysql database with env credentials
+    this.sequelize = new Sequelize(//get the last two elements of the array
       process.env.DATABASE,
       process.env.USUARIO,
       process.env.PASSWORD,
@@ -14,7 +17,8 @@ class Database {
         host: process.env.HOST,
         dialect: "mysql",
       }
-    );
+    );  
+    //defines the model of the table
     this.Registro = this.sequelize.define(
       process.env.TABLE,
       {
@@ -52,12 +56,14 @@ class Database {
     );
 
     this.registroHandler = {
+
+      //POST data to the database
       createQuery: async (data) => {
         try {
           const valores = data.split(";");
           const timestamp = parseInt(valores[3], 10);
           const fecha = new Date(timestamp);
-          const fechaLegible = fecha.toLocaleString({hourCycle:'h23'});
+          const fechaLegible = fecha.toLocaleString({ hour: 'numeric', minute: 'numeric', hour12: false });
           const fechas = fechaLegible.split(",");
           const newRegistro = {
             ident: valores[4],
@@ -73,7 +79,8 @@ class Database {
             this.registros.push(newRegistro);
             this.lastRegistro = newRegistro;
           }
-          if (this.registros.length >= 100) {
+          //Create Query every x data
+          if (this.registros.length >= 10) {
             await this.Registro.bulkCreate(this.registros);
             this.registros = [];
           }
@@ -81,41 +88,16 @@ class Database {
           console.error("Error al crear una nueva query:", error);
         }
       },
+      //GET range of data 
       GetQueryRange: async (startDateTime, endDateTime) => {
         try {
           var startDate = startDateTime.split(' ');
           var endDate = endDateTime.split(' ');
           const registros = await this.Registro.findAll({
             where: {
-              fecha: {
-                [Op.between]: [startDate[0], endDate[0]]
-              },
-              [Op.or]: [
-                {
-                  fecha: startDate[0],
-                  hora: {
-                    [Op.gte]: startDate[1]
-                  }
-                },
-                {
-                  fecha: {
-                    [Op.gt]: startDate[0]
-                  }
-                }
-              ],
-              [Op.or]: [
-                {
-                  fecha: endDate[0],
-                  hora: {
-                    [Op.lte]: endDate[1]
-                  }
-                },
-                {
-                  fecha: {
-                    [Op.lt]: endDate[0]
-                  }
-                }
-              ]
+              fecha: {[Op.between]: [startDate[0], endDate[0]]},
+              [Op.or]: [{fecha: startDate[0],hora: {[Op.gte]: startDate[1]}},{fecha: {[Op.gt]: startDate[0]}}],
+              [Op.or]: [{fecha: endDate[0],hora: {[Op.lte]: endDate[1]}},{fecha: {[Op.lt]: endDate[0]}}]
             },
             raw: true
           });
@@ -126,17 +108,17 @@ class Database {
     },
     };
   }
-
+  //ensures connection to the database
   async connection() {
     try {
       await this.sequelize.authenticate();
       console.log("Connection has been established successfully.");
-      // Crear la base de datos y la tabla si no existen
+      // Create db and table if they don't exist
       await this.sequelize.query("CREATE DATABASE IF NOT EXISTS Tracker;");
       await this.Registro.sync({ alter: true });
       console.log("Database and table created successfully.");
 
-      // Devolver la instancia de Sequelize
+      // Return sequelize instance
       return this.sequelize;
     } catch (error) {
       console.error("Unable to connect to the database:", error);

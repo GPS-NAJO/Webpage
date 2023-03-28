@@ -1,21 +1,18 @@
-
-/* HOME*/
-.long,.lat{
+ /* HOME*/
+.long,.lat {
   font-size: 13px;
   font-weight: lighter;
   color: grey;
   margin: 0px;
 }
 
-.longitud,.latitud,.id,.time{
-  left: 85%;
-  background-color:gainsboro;
-  padding: 20px;
+.longitud,
+.latitud,
+.id,
+.time {
+  background-color: gainsboro;
   border-radius: 20px;
-  position: absolute;
-  transform: translate(-50%, -50%);
   font-family: initial;
-  padding-left: 20px;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -23,144 +20,176 @@
   justify-content: center;
   text-align: center;
   margin-top: 20px;
-  width: 250px;
-  left: 85%;
+  padding-block: 20px;
 }
-.carro{
-margin-right: 20px;
+.carro {
+  margin-right: 20px;
 }
-.reloj{
+.reloj {
   font-size: 50px;
   margin-right: 10px;
 }
-.lonicon,.laticon{
+.lonicon,
+.laticon {
   margin-bottom: 5px;
 }
-.calendar{
+.calendar {
   padding-right: 10px;
 }
 
-/*Texto del div*/
-#latitud,#longitud{
+
+#latitud,
+#longitud {
   font-size: 18px;
   font-weight: 200;
   font-family: initial;
 }
 
-#hora{
-  font-size:  42px;
-  font-family: initial;
- 
-}
-#id{
+#hora {
   font-size: 30px;
   font-family: initial;
-
 }
-#fecha{
-  padding-bottom: 50px;
-  font-family: 'Times New Roman', Times, serif;
+#id {
+  font-size: 30px;
+  font-family: initial;
 }
-
-/* divs de coordenadas, hora y fecha*/
-.longitud{
-    top: 72.92%;  
-    height: 75px;
+#fecha {
+  font-family: "Times New Roman", Times, serif;
 }
 
-.latitud{
-  top: 53.24%;
-  height: 75px;
-}
-.time{
-    top: 14%;
-    height: 100px;
-    font-size: 25px;
-    padding-top: 30px;
-  
-}
-.id{
-  top: 35%;
-  height: 55px;
+.id {
   display: flex;
   align-items: center;
   flex-direction: row;
 }
 
 /*--------------------- General ------------------ */
-.main{
-  background-color: white;
-  color:black;
-  vertical-align: middle;
-}
-h1{
 
-  font-size:  15px;
-  font-family: monospace;   
+h1 {
+  font-size: 15px;
   text-align: center;
   font-weight: lighter;
-
 }
 body {
   height: 100%;
   display: flex;
-  
-  align-items: center;
-  }
-
-/* Botones */
-/*.tiemporeal{
-  position: absolute;
-			top: 70%;
-			left: 11%;
-			transform: translate(-50%, -50%);
-      background-color: blue;
-}*/
-#historico{
-  position: fixed;
-      top: 88%;
-      left: 74.8%;
-      border: 0;
-      width: 200px;
-      background-color:rgba(37, 37, 37, 1);
-      color: white;
-      display: flex;
-  align-items: center;
-  flex-direction: row;
-  border-radius: 50px;
-  padding: 10px;
-  padding-left: 22px
+  background-color: white;
+  color: black;
 }
-#idselector{
-  position: fixed;
-      top: 88%;
-      left: 90.5%;
-      border: 0;
-      width: 70px;
-      background-color:rgba(37, 37, 37, 1);
-      color: white;
-      display: flex;
+
+.buttons-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 20px;
+  margin: 20px;
+}
+
+#historico {
+  border: 0;
+  width: 100%;
+  margin-right: 10px;
+  background-color: rgba(37, 37, 37, 1);
+  color: white;
+  display: flex;
   align-items: center;
   flex-direction: row;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 10px;
-  padding-left: 20px
+}
+#idselector {
+  border: 0px;
+  width: 70px;
+  background-color: rgba(37, 37, 37, 1);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  height: 100%;
+}
+#sendBtn, #returnToHome{
+  border: 0px;
+  width: 140px;
+  background-color: rgba(37, 37, 37, 1);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 5px;
+  border-radius: 12px;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 16px;
+  height: 25px;
+  align-self: center;
+}
+
+#dateSelect{
+  border-radius: 20px;
+  height: 30px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+#slider,#sliderZoom{
+ border-radius: 10px;
+ width: 390px;
+ align-self: center;
 }
 /* Mapa */
 
-#nav,#mapa{
+#mapa {
   height: calc(100vh - 15px);
-  width: 70%; 
+  width: 95%;
   border-radius: 20px;
-  left: 1%;
-  position: static;
 }
- /* Historicos*/
+#nav{
+  height: calc(100vh - 15px);
+  width: 95%;
+  border-radius: 20px;
+  left: 0%;
+}
 
-.Input-container{
+.displayContainer{
+  border-radius: 20px;
+    font-family: system-ui;
+    text-align: center;
+    border-width: 20px;
+    border-color: #357ebd;
+    color:black;
+    height: 30px;
+    border-color: black;
+    background-color: beige;
+}
+.noUi-horizontal .noUi-handle {
+  width: 23px;
+  height: 25px;
+  right: -17px;
+  top: -5px;
+
+}
+/* Historicos*/
+
+.Input-container {
+  width:400px;
+  padding-inline: 20px;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+
+}
+.content-container {
   width: 350px;
-  height: 503px;
-  left: 80%;
-  position: fixed;
-  left: 80%;
+  padding-inline: 10px;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+.map-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

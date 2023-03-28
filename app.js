@@ -1,3 +1,4 @@
+//Dependencies
 var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
@@ -8,24 +9,29 @@ var homeRouter = require("./routes/home");
 var app = express();
 var { message } = require("./listener/index.js");
 var Database = require("./Databases.js");
-//pruebacamar
 const { parse } = require("path");
-// view engine setup
 const database = new Database();
+
+//configuration parameters
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
-
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-
 app.use(express.static(path.join(__dirname, "public")));
 
-udplistener.Listener();
 
+udplistener.Listener(); //Function to recieve the GPS data
+
+//web routing
 app.use("/", homeRouter);
+app.get('/public/scripts/Historicos.js', function(req, res) {
+  res.set('Content-Type', 'text/javascript');
+  res.sendFile(path.join(__dirname, 'public', 'scripts', 'Historicos.js'));
+});
 
+//Real time gps data sent to the client side
 app.get("/api/gps", (req, res) => {
   if (process.argv.includes("--d")) {
     const minLatitude = 10.923518;
@@ -67,6 +73,7 @@ app.get("/api/gps", (req, res) => {
   }
 });
 
+//handling GET request data from the database to the client side
 app.get("/api/historicos", async (req,res) =>{
   const startTime = req.query.startTime;
   const endTime = req.query.endTime;

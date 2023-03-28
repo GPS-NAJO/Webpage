@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.9" />
     <title>Historial de rutas</title>
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
       integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
       crossorigin=""
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/stylesheets/styles.css"
+      media="screen"
     />
     <script
       src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
@@ -32,102 +40,37 @@
     />
     <link
       rel="stylesheet"
-      type="text/css"
-      href="/stylesheets/styles.css"
-      media="screen"
+      href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.css"
     />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.js"></script>
   </head>
   <body>
     <div id="nav"></div>
-    <script>
-      var nav = L.map("nav").setView([51.505, -0.09], 13);
-      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 19,
-        attribution:
-          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      }).addTo(nav);
-    </script>
+
     <section>
       <div class="Input-container">
-          <input type="text" name="datetimes" />
-          <script>
-            $(function () {
-              $('input[name="datetimes"]').daterangepicker({
-                timePicker: true,
-                timePicker24Hour: true,
-                timePickerIncrement: 5,
-                locale: {
-                  format: "YYYY/MM/DD HH:mm:ss",
-                },
-                minDate: "2023/03/06 09:00:00",
-                maxDate: new Date(),
-                startDate: moment().startOf("hour"),
-                endDate: moment().startOf("hour").add(32, "hour"),
-              });
-            });
-          </script>
-        <input type="button" value="Send" id="sendBtn" />
-        <script>
-          $(function () {
-            $("#sendBtn").click(function () {
-              console.log("endTime:", $('input[name="datetimes"]').data("daterangepicker").endDate.format("YYYY/MM/DD HH:mm:ss"));
-              $.ajax({
-                url: "/api/historicos",
-                data: {
-                  startTime: $('input[name="datetimes"]')
-                    .data("daterangepicker")
-                    .startDate.format("YYYY/MM/DD HH:mm:ss"),
-                  endTime: $('input[name="datetimes"]')
-                    .data("daterangepicker")
-                    .endDate.format("YYYY/MM/DD HH:mm:ss"),
-                },
-                success: function (data) {
-                  let coordenadas = [];
-                  let coord = [];
-                  for (var i=0; i<data.length ; i++) {
-                    coord = [data[i].latitud, data[i].longitud];
-                    coordenadas.push(coord);
-                  }
-
-                  // Get a reference to the previously drawn polyline and marker, if they exist
-                  const previousPolyline = nav.previousPolyline;
-                  const previousMarker = nav.previousMarker;
-
-                  // Remove the previously drawn polyline and marker from the map, if they exist
-                  if (previousPolyline) {
-                    previousPolyline.remove();
-                  }
-                  if (previousMarker) {
-                    previousMarker.remove();
-                  }
-
-                  // Create the new polyline and add it to the map
-                  const newPolyline = L.polyline(
-                    coordenadas,
-                    {
-                      color: "red",
-                    }
-                  ).addTo(nav);
-                  
-                  // Set the view of the map and add a marker at the last coordinate
-                  nav.setView(coord, 15);
-                  const newMarker = L.marker(coordenadas[coordenadas.length - 1]).addTo(nav);
-                  
-                  // Store the new polyline and marker in properties of the map object
-                  nav.previousPolyline = newPolyline;
-                  nav.previousMarker = newMarker;
-                },
-              });
-            });
-          });
-        </script>
+        <br />
+        <br />
+        <h1> Consulta el tiempo
+        </h1>
+        <br/>
+        <div class="displayContainer">
+          <span id="display"></span>
+        </div>
+        <br/>
+        <div id="slider"></div>
+        <h1> Ajusta el zoom
+        </h1>
+        <div id="sliderZoom"></div>
+        <br />
+        <input type="text" name="datetimes" id="dateSelect" />
+        <div class="buttons-container"></div>
+        <input type="button" value="Solicitar" id="sendBtn" />
         <button id="returnToHome">Regresar</button>
-        <script>
-          document.getElementById("returnToHome").addEventListener("click", () => {
-            window.location.href = "/";
-          });
-        </script>
+        </div>
+        
       </div>
     </section>
+    <script src="../public/scripts/historicos.js"></script>
   </body>
 </html>

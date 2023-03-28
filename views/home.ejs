@@ -22,8 +22,11 @@
     />
   </head>
 
-  <body class="main">
-    <div class="texto">
+  <body>
+    <div class="map-container">
+      <div id="nav"></div>
+    </div>
+    <div class="content-container">
       <div class="latitud">
         <img src="assets/latitud.png" class="laticon" />
         <h3 class="lat">Latitud:</h3>
@@ -37,24 +40,24 @@
       </div>
       <div class="time">
         <img src="assets\reloj32.png" class="reloj" />
-        <h1><span id="hora"></span></h1>
-        <h1><span id="fecha"></span></h1>
+        <span id="hora"></span>
+        <span id="fecha"></span>
       </div>
       <div class="id">
         <img src="assets/carro30.png" class="carro" />
         <h1><span id="id"></span></h1>
       </div>
+      <div class="buttons-container">
+        <button id="historico">
+          <img src="assets/calendario29.png" class="calendar" /> Consultar
+          historicos
+        </button>
+        <button id="idselector">
+          <img src="assets/carros27.png" class="carros" />
+        </button>
+      </div>
     </div>
 
-    <button id="historico">
-      <img src="assets/calendario29.png" class="calendar" /> Consultar
-      historicos
-    </button>
-    <button id="idselector">
-      <img src="assets/carros27.png" class="carros" />
-    </button>
-
-    <div id="nav"></div>
     <script
       src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
       integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="

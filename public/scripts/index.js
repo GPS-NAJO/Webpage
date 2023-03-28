@@ -11,7 +11,7 @@ function getData(callback) {
   $.ajax("/api/gps", {
     method: "GET",
     success: function (data) {
-      var fecha = new Date(data.timestamp); // Convertir el timestamp a milisegundos y crear un objeto Date
+      var fecha = new Date(data.timestamp); //Convert timestamp to miliseconds and create object "Data"
       var fechaLegible = fecha.toLocaleString();
       var fechas = fechaLegible.split(",");
       var dato = [data.latitud, data.longitud, fechas[0], fechas[1], data.id];
@@ -32,14 +32,14 @@ async function init() {
     coordenadas.push(coords);
     const map = nav.setView(coords, 15);
 
-    // Crea una capa de mosaicos
+    // Create a mosaic layer
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution:
         'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
       maxZoom: 20,
     }).addTo(map);
 
-    // Crea un control de rutas y agrega la ruta al mapa
+    // Creates a routes control and appends it to the map
     marker = L.marker(coordenadas[coordenadas.length - 1], {
       icon: carritoIcon,
     }).addTo(nav);
@@ -57,8 +57,9 @@ async function init() {
 
         if (coordenadas.length > 1) {
           var polyline = L.polyline(
+
+            //get the last two elements of the array
             coordenadas.slice(-2),
-            // ^^^ get the last two elements of the array
             {
               color: "red",
             }
