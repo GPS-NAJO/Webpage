@@ -49,18 +49,26 @@
 
     <section>
       <div class="Input-container">
-        <input type="text" name="datetimes" />
-        <input type="button" value="Solicitar" id="sendBtn" />
-        <button id="returnToHome">Regresar</button>
         <br />
         <br />
-        <div id="slider"></div>
-        <br />
-        <div id="sliderZoom"></div>
-        <br />
-        <div>
+        <h1> Consulta el tiempo
+        </h1>
+        <br/>
+        <div class="displayContainer">
           <span id="display"></span>
         </div>
+        <br/>
+        <div id="slider"></div>
+        <h1> Ajusta el zoom
+        </h1>
+        <div id="sliderZoom"></div>
+        <br />
+        <input type="text" name="datetimes" id="dateSelect" />
+        <div class="buttons-container"></div>
+        <input type="button" value="Solicitar" id="sendBtn" />
+        <button id="returnToHome">Regresar</button>
+        </div>
+        
       </div>
     </section>
     <script src="../public/scripts/historicos.js"></script>
