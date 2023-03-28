@@ -4,9 +4,12 @@ const { Op } = require("sequelize");
 require("dotenv").config();
 
 class Database {
+  
   constructor() {
+
     this.registros = [];
-    this.sequelize = new Sequelize(
+    //connects to the mysql database with env credentials
+    this.sequelize = new Sequelize(//get the last two elements of the array
       process.env.DATABASE,
       process.env.USUARIO,
       process.env.PASSWORD,
@@ -14,7 +17,8 @@ class Database {
         host: process.env.HOST,
         dialect: "mysql",
       }
-    );
+    );  
+    //defines the model of the table
     this.Registro = this.sequelize.define(
       process.env.TABLE,
       {
@@ -52,6 +56,8 @@ class Database {
     );
 
     this.registroHandler = {
+
+      //POST data to the database
       createQuery: async (data) => {
         try {
           const valores = data.split(";");
@@ -81,6 +87,7 @@ class Database {
           console.error("Error al crear una nueva query:", error);
         }
       },
+      //GET range of data 
       GetQueryRange: async (startDateTime, endDateTime) => {
         try {
           var startDate = startDateTime.split(' ');
@@ -100,7 +107,7 @@ class Database {
     },
     };
   }
-
+  //ensures connection to the database
   async connection() {
     try {
       await this.sequelize.authenticate();

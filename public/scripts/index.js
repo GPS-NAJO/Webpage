@@ -57,8 +57,9 @@ async function init() {
 
         if (coordenadas.length > 1) {
           var polyline = L.polyline(
+
+            //get the last two elements of the array
             coordenadas.slice(-2),
-            // ^^^ get the last two elements of the array
             {
               color: "red",
             }

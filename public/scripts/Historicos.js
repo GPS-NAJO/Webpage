@@ -1,4 +1,5 @@
 //////////////////////////////////
+//init variables
 var nav = L.map("nav").setView([11.019, -74.81], 13);
 let datos = [];
 let circle;
@@ -9,6 +10,7 @@ var stepSlider = document.getElementById('slider');
 var stepSliderZoom = document.getElementById('sliderZoom');
 
 
+//create slidres 
 noUiSlider.create(stepSlider, {
     start: [0],
     behaviour: 'smooth-steps-tap-snap',
@@ -42,7 +44,7 @@ stepSliderZoom.noUiSlider.disable();
 
 //////////////////////////////////
 
-
+//function for handling the date range picker
 $(function () {
     $('input[name="datetimes"]').daterangepicker({
         timePicker: true,
@@ -58,9 +60,11 @@ $(function () {
     });
 });
 
-
+//logic withing the "solicitar" button
 $(function () {
     $("#sendBtn").click(function () {
+
+        //eliminate all previous data, if they exist
         puntosEncontrados = [];
         if (circle) {
             circle.remove();
@@ -69,6 +73,7 @@ $(function () {
             previousMarker.remove();
         }
 
+        //request data to the server
         $.ajax({
             url: "/api/historicos",
             data: {
@@ -94,6 +99,8 @@ $(function () {
                 if (previousMarker) {
                     previousMarker.remove();
                 }
+
+                //if there is data found within the range requested
                 if(data.length>0){
                     for (var i = 0; i < data.length; i++) {
                         coord = [data[i].latitud, data[i].longitud];
@@ -114,9 +121,13 @@ $(function () {
                     // Store the new polyline and marker in properties of the map object
                     nav.previousPolyline = newPolyline;
                     nav.previousMarker = newMarker;
+                    
+                    //reactivate the event listener on clicking the map
                     nav.off('click');
                     nav.on('click', e => onClickMapa(e));
                 }else{ 
+
+                    //disabling the event listener and sliders, since there are no data
                     nav.off('click');
                     stepSlider.noUiSlider.disable();
                     stepSliderZoom.noUiSlider.disable();
@@ -127,16 +138,19 @@ $(function () {
     });
 });
 
+//filter function
 function puntoDentroRadio(coordenada, centro, radio) {
     return (coordenada.latitud - centro.lat) ** 2 + (coordenada.longitud - centro.lng) ** 2 <= radio ** 2;
 }
+
+//click handler function
 function onClickMapa(e) {
     var zoom_slider = Math.round(stepSliderZoom.noUiSlider.get(true)) 
     const zoomLevel = nav.getZoom(); // get the current zoom level of the map
-    const radio = (0.002*zoom_slider) * Math.pow(2, 22 - zoomLevel); // calculate the radius based on the zoom level
+    const radio = (0.002*zoom_slider) * Math.pow(2, 22 - zoomLevel); // calculate the radius based on the zoom level and the zoomslider
 
     const PuntoCentral = e.latlng;
-    const radio_latitud = radio / 110.574
+    const radio_latitud = radio / 110.574 //converts the radius to degrees
     if (circle) {
         circle.remove();
     }
@@ -144,16 +158,21 @@ function onClickMapa(e) {
         color: '#4c007d',
         fillColor: '#bc4ed8',
         fillOpacity: 0.3,
-        radius: radio_latitud * 111000
+        radius: radio_latitud * 111000 //converts the radius to meters
     }).addTo(nav);
+
+    //filter the array of coordinates retrieved from the server
     puntosEncontrados = datos.filter(p => puntoDentroRadio(p, PuntoCentral, radio_latitud));
+
     if (puntosEncontrados.length > 0) {
 
+        //array of index to access the specific coordinate
         var valuesForSlider = [];
-
         for (var i = 0; i < puntosEncontrados.length; i++) {
             valuesForSlider.push(i);
         }
+
+        //it needs to destroy and create the slider in order to update correctly
         if (stepSlider) {
             stepSlider.noUiSlider.destroy();
 
@@ -180,6 +199,7 @@ function onClickMapa(e) {
 
         stepSlider.noUiSlider.on('change', function () {
 
+            //displays time and date of the current selected data with the slider
             var display_index = Math.round(stepSlider.noUiSlider.get(true))
             document.getElementById("display").textContent = puntosEncontrados[display_index].fecha + " " + puntosEncontrados[display_index].hora;
             previousMarker = nav.previousMarker;
@@ -187,7 +207,7 @@ function onClickMapa(e) {
             if (previousMarker) {
                 previousMarker.remove();
             }
-
+            //creates a marker on the map with the corresponding coordinate
             newMarker = L.marker([puntosEncontrados[display_index].latitud, puntosEncontrados[display_index].longitud]).addTo(nav);
             nav.previousMarker = newMarker;
 
