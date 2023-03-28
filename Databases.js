@@ -79,7 +79,8 @@ class Database {
             this.registros.push(newRegistro);
             this.lastRegistro = newRegistro;
           }
-          if (this.registros.length >= 100) {
+          //Create Query every x data
+          if (this.registros.length >= 10) {
             await this.Registro.bulkCreate(this.registros);
             this.registros = [];
           }
