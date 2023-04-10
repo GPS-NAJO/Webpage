@@ -5,31 +5,20 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var udplistener = require("./listener/index");
-var homeRouter = require("./routes/home");
 var app = express();
 var { message } = require("./listener/index.js");
 var Database = require("./Databases.js");
-const { parse } = require("path");
 const database = new Database();
 
 //configuration parameters
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join("../Webpagen-FrontEnd", "build")));
 
 
 udplistener.Listener(); //Function to recieve the GPS data
-
-//web routing
-app.use("/", homeRouter);
-app.get('/public/scripts/Historicos.js', function(req, res) {
-  res.set('Content-Type', 'text/javascript');
-  res.sendFile(path.join(__dirname, 'public', 'scripts', 'Historicos.js'));
-});
 
 //Real time gps data sent to the client side
 app.get("/api/gps", (req, res) => {
@@ -53,6 +42,7 @@ app.get("/api/gps", (req, res) => {
       id: id,
     };
     res.json(gpsjson);
+    console.log(gpsjson);
   } else {
     try {
       if (message.value != null) {
@@ -65,6 +55,7 @@ app.get("/api/gps", (req, res) => {
           id: gpsdata[4],
         };
         res.json(gpsjson);
+        console.log(gpsjson);
       }
     } catch (err) {
       console.error(err);
@@ -85,4 +76,12 @@ app.get("/api/historicos", async (req,res) =>{
     });
   res.json(datos);
 })
+
+//web routing
+app.get('/*', function (req, res) {
+  const filePath = path.resolve(__dirname, '../Webpagen-FrontEnd/build/index.html');
+  res.sendFile(filePath);
+});
+
+
 module.exports = app;
