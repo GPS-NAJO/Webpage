@@ -42,7 +42,6 @@ app.get("/api/gps", (req, res) => {
       id: id,
     };
     res.json(gpsjson);
-    console.log(gpsjson);
   } else {
     try {
       if (message.value != null) {
@@ -55,7 +54,6 @@ app.get("/api/gps", (req, res) => {
           id: gpsdata[4],
         };
         res.json(gpsjson);
-        console.log(gpsjson);
       }
     } catch (err) {
       console.error(err);
