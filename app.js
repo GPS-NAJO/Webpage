@@ -65,9 +65,9 @@ app.get("/api/gps", (req, res) => {
 });
 
 //handling GET request data from the database to the client side
-app.get("/api/historicos", async (req,res) =>{
-  const startTime = req.query.startTime;
-  const endTime = req.query.endTime;
+app.get("/api/historics", async (req,res) =>{
+  const startTime = req.query.start;
+  const endTime = req.query.end;
   const datos = await database.registroHandler.GetQueryRange(startTime,endTime);
   datos.sort(function(a,b){
     const fechaA = new Date(a.date + "T" + a.time);
