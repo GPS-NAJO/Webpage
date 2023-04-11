@@ -10,7 +10,7 @@ var stepSlider = document.getElementById('slider');
 var stepSliderZoom = document.getElementById('sliderZoom');
 
 
-//create slidres 
+//create sliders 
 noUiSlider.create(stepSlider, {
     start: [0],
     behaviour: 'smooth-steps-tap-snap',
@@ -63,7 +63,7 @@ $(function () {
 //logic withing the "solicitar" button
 $(function () {
     $("#sendBtn").click(function () {
-
+        
         //eliminate all previous data, if they exist
         puntosEncontrados = [];
         if (circle) {
@@ -85,6 +85,9 @@ $(function () {
                     .endDate.format("YYYY/MM/DD HH:mm:ss"),
             },
             success: function (data) {
+                console.log( $('input[name="datetimes"]')
+                .data("daterangepicker")
+                .endDate.format("YYYY/MM/DD HH:mm:ss"))
                 let coordenadas = [];
                 datos = data;
                 let coord = [];
