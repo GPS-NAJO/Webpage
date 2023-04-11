@@ -65,7 +65,7 @@ async function init() {
             }
           ).addTo(map);
         }
-        nav.setView(coords, 15);
+        nav.setView(coords);
         marker?.setLatLng(coordenadas[coordenadas.length - 1]);
       });
     }, 6000);
